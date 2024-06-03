@@ -1,0 +1,1 @@
+export const wsUrl = 'ws://192.168.29.144:8765';
