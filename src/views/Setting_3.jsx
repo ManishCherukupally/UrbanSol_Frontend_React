@@ -102,18 +102,18 @@ const Setting_3 = () => {
     }
     return (
         <div style={{ height: "100vh" }}>
-            <Flex direction={"column"} justify={"space-between"}>
-                <div class="header">
+            {/* <Flex direction={"column"} justify={"space-between"}> */}
+            {/* <div class="header">
                     <h2 style={{ paddingLeft: "2%" }}>DD/MM/YYYY</h2>
                     <h2>SETTING-3</h2>
                     <h2 style={{ paddingRight: "2%" }}>HH:MM:SS</h2>
-                </div>
-                <div style={{ height: "76vh" }}>
+                </div> */}
+            {/* <div style={{ height: "76vh" }}>
 
-                    <Container size={"xl"} maw={"100%"} m={0} pt={"1rem"}>
+                    <Container size={"xl"} maw={"100%"} m={0} pt={"1rem"}> */}
 
 
-                        {/* <Flex align={"center"} justify={"end"} gap={"23%"}>
+            {/* <Flex align={"center"} justify={"end"} gap={"23%"}>
                         <Text fz={"xl"} fw={700}>Present Time</Text>
                         <Text fz={"xl"} fw={700} pr={"6%"}>Set Time</Text>
                         <Button fz={"xl"} h={"3rem"}>Save</Button>
@@ -122,123 +122,122 @@ const Setting_3 = () => {
                     <Card>
                         <Text fz={"xl"} fw={600}>Total Cycle Time</Text>
                     </Card> */}
-                        <Grid >
-                            <Grid.Col span={11} pl={"15%"}>
+            <Grid >
+                <Grid.Col span={2}>
+                    <Button h={"3rem"} fz={"xl"} fw={600} style={{ backgroundColor: 'rgb(233, 153, 3)' }} onClick={() => navigate('/setting2')}>BACK</Button>
+                </Grid.Col>
+                <Grid.Col span={9}>
 
-                                <SimpleGrid cols={4} spacing={"4rem"} justify="center">
-                                    <h2></h2>
-                                    <Text fz={"xl"} fw={700}>Present Time</Text>
-                                    <Text fz={"xl"} fw={700}>Set Time</Text>
-                                    <h2></h2>
+                    <SimpleGrid cols={3} spacing={"4rem"} verticalSpacing={"3.85rem"} justify="center">
+                        <h2></h2>
+                        {/* <Text fz={"xl"} fw={700}>Present Time</Text> */}
+                        <Text fz={"xl"} fw={700}>Set Value</Text>
+                        <h2></h2>
 
-                                    <Text fz={"xl"} fw={700}>Heater Temp.
-                                        <span>
-                                            <br />
-                                            Cut Off Limit</span></Text>
-                                    <Text id="presentfwdTime" fz={"xl"} fw={600}>123 C</Text>
-                                    {heaterEditing ?
-                                        <NumberInput
-                                            hideControls
-                                            value={postHeater === 0 ? heaterTime : postHeater} // Set initial value
-                                            onChange={setPostHeater} /> :
-                                        <Text fz={"xl"} fw={600}>{heaterTime} C </Text>
-                                    }
-                                    <Button id="fwdEdit" h={"3rem"} w={"30%"} c={"black"}
-                                        onClick={() => setheaterEditing(true)} style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
-
-
-                                    <Text fz={"xl"} fw={700}>Overload Current
-                                        <span>
-                                            <br />
-                                            Limit</span></Text>
-                                    <Text id="presentfwdTime" fz={"xl"} fw={600}>120 A</Text>
-                                    {overLoadEditing ?
-                                        <NumberInput
-                                            hideControls
-                                            value={postoverLoadTime === 0 ? overLoadTime : postoverLoadTime} // Set initial value
-                                            onChange={
-                                                setPostoverLoadTime} /> :
-                                        <Text fz={"xl"} fw={600}>{overLoadTime} A </Text>
-                                    }
-                                    <Button id="fwdEdit" h={"3rem"} w={"30%"} c={"black"}
-                                        onClick={() => setoverLoadEditing(true)} style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
+                        <Text fz={"xl"} fw={700}>Heater Temperature  Cut Off Limit
+                        </Text>
+                        {/* <Text id="presentfwdTime" fz={"xl"} fw={600}>123 C</Text> */}
+                        {heaterEditing ?
+                            <NumberInput
+                                hideControls
+                                value={postHeater === 0 ? heaterTime : postHeater} // Set initial value
+                                onChange={setPostHeater} /> :
+                            <Text fz={"xl"} fw={600}>{heaterTime}° C </Text>
+                        }
+                        <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
+                            onClick={() => setheaterEditing(true)} style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
 
 
-
-                                    <Text fz={"xl"} fw={700}>Delay Time For Crusher
-                                        <span>
-                                            <br />
-                                            Start After OL</span></Text>
-                                    <Text id="presentwait1" fz={"xl"} fw={600}>124 Sec</Text>
-                                    {crusherStartEditing ?
-                                        <NumberInput
-                                            hideControls
-                                            value={postcrusherStartTime === 0 ? crusherStartTime : postcrusherStartTime} // Set initial value
-                                            onChange={
-                                                // console.log(fwdTime)
-                                                setPostcrusherStartTime
-                                            } /> :
-                                        <Text fz={"xl"} fw={600}>{crusherStartTime} Sec </Text>
-                                    }
-                                    <Button id="fwdEdit" h={"3rem"} w={"30%"} c={"black"}
-                                        onClick={() => setcrusherStartEditing(true)} style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
+                        <Text fz={"xl"} fw={700}>Overload Current  Limit
+                        </Text>
+                        {/* <Text id="presentfwdTime" fz={"xl"} fw={600}>120 A</Text> */}
+                        {overLoadEditing ?
+                            <NumberInput
+                                hideControls
+                                value={postoverLoadTime === 0 ? overLoadTime : postoverLoadTime} // Set initial value
+                                onChange={
+                                    setPostoverLoadTime} /> :
+                            <Text fz={"xl"} fw={600}>{overLoadTime} A </Text>
+                        }
+                        <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
+                            onClick={() => setoverLoadEditing(true)} style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
 
 
 
-                                    <Text fz={"xl"} fw={700}>Delay Time For Crusher
-                                        <span>
-                                            <br />
-                                            Rev After OL</span></Text>
-                                    <Text id="presentrevTime" fz={"xl"} fw={600}>130 Sec</Text>
-                                    {crusherRevEditing ?
-                                        <NumberInput
-                                            hideControls
-                                            value={postcrusherRevTime === 0 ? crusherRevTime : postcrusherRevTime} // Set initial value
-                                            onChange={
-                                                // console.log(fwdTime)
-                                                setPostcrusherRevTime
-                                            } /> :
-                                        <Text fz={"xl"} fw={600}>{crusherRevTime} Sec</Text>
-                                    }
-                                    <Button id="fwdEdit" h={"3rem"} w={"30%"} c={"black"}
-                                        onClick={() => setcrusherRevEditing(true)} style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
+                        <Text fz={"xl"} fw={700}>Delay Time For Crusher Start After OL
+                        </Text>
+                        {/* <Text id="presentwait1" fz={"xl"} fw={600}>124 Sec</Text> */}
+                        {crusherStartEditing ?
+                            <NumberInput
+                                hideControls
+                                value={postcrusherStartTime === 0 ? crusherStartTime : postcrusherStartTime} // Set initial value
+                                onChange={
+                                    // console.log(fwdTime)
+                                    setPostcrusherStartTime
+                                } /> :
+                            <Text fz={"xl"} fw={600}>{crusherStartTime} Sec </Text>
+                        }
+                        <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
+                            onClick={() => setcrusherStartEditing(true)} style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
 
 
 
-                                    <Text fz={"xl"} fw={700}>Crusher Frequency</Text>
-                                    <Text id="presentwait2" fz={"xl"} fw={600}>125 Hz</Text>
-                                    {currentFreqEditing ?
-                                        <NumberInput
-                                            hideControls
-                                            value={postcurrentFreqTime === 0 ? currentFreqTime : postcurrentFreqTime} // Set initial value
-                                            onChange={
-                                                // console.log(fwdTime)
-                                                setPostcurrentFreqTime
-                                            } /> :
-                                        <Text fz={"xl"} fw={600}>{currentFreqTime} Hz</Text>
-                                    }
-                                    <Button id="fwdEdit" h={"3rem"} w={"30%"} c={"black"}
-                                        onClick={() => setcurrentFreqEditing(true)} style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
+                        <Text fz={"xl"} fw={700}>Delay Time For Crusher Reverse After OL
+                        </Text>
+                        {/* <Text id="presentrevTime" fz={"xl"} fw={600}>130 Sec</Text> */}
+                        {crusherRevEditing ?
+                            <NumberInput
+                                hideControls
+                                value={postcrusherRevTime === 0 ? crusherRevTime : postcrusherRevTime} // Set initial value
+                                onChange={
+                                    // console.log(fwdTime)
+                                    setPostcrusherRevTime
+                                } /> :
+                            <Text fz={"xl"} fw={600}>{crusherRevTime} Sec</Text>
+                        }
+                        <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
+                            onClick={() => setcrusherRevEditing(true)} style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
 
 
-                                </SimpleGrid>
-                            </Grid.Col>
-                            <Grid.Col span={1}>
-                                <Flex justify={"end"}>
-                                    <Button id="saveButton" onClick={handleSaveButton} fz={"xl"} h={"3rem"} fullWidth style={{ backgroundColor: "#d10000" }}>Save</Button>
-                                </Flex>
-                            </Grid.Col>
-                        </Grid>
-                    </Container>
-                </div>
 
-                <Flex className="stng1footer" justify={"space-between"} align={"center"}>
+                        <Text fz={"xl"} fw={700}>Crusher Frequency</Text>
+                        {/* <Text id="presentwait2" fz={"xl"} fw={600}>125 Hz</Text> */}
+                        {currentFreqEditing ?
+                            <NumberInput
+                                hideControls
+                                value={postcurrentFreqTime === 0 ? currentFreqTime : postcurrentFreqTime} // Set initial value
+                                onChange={
+                                    // console.log(fwdTime)
+                                    setPostcurrentFreqTime
+                                } /> :
+                            <Text fz={"xl"} fw={600}>{currentFreqTime} Hz</Text>
+                        }
+                        <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
+                            onClick={() => setcurrentFreqEditing(true)} style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
+
+
+                    </SimpleGrid>
+
+                </Grid.Col>
+                <Grid.Col span={1} style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+
+                    {/* <Button h={"3rem"} fz={"xl"} fw={600} mr={"1%"} style={{ backgroundColor: 'rgb(233, 153, 3)' }}
+                        onClick={() => navigate('/setting3')}>NEXT</Button> */}
+                    <h2></h2>
+                    <Button id="saveButton" onClick={handleSaveButton} fz={"xl"} h={"3rem"} style={{ backgroundColor: "#d10000" }}>Save</Button>
+
+                </Grid.Col>
+            </Grid>
+            {/* </Container> */}
+            {/* </div> */}
+
+            {/* <Flex className="stng1footer" justify={"space-between"} align={"center"}>
                     <Button h={"80%"} w={"20%"} fz={"xl"} fw={600} ml={"1%"} style={{ backgroundColor: 'rgb(233, 153, 3)' }}
                         onClick={() => navigate('/setting2')}>BACK</Button>
                     <Button h={"80%"} w={"20%"} fz={"xl"} fw={600} mr={"1%"} onClick={() => navigate('/')}>HOME</Button>
 
-                </Flex>
-            </Flex>
+                </Flex> */}
+            {/* </Flex> */}
         </div>
     )
 }

@@ -1,10 +1,68 @@
 import React from 'react'
 import Operations from '../views/Operations'
+import { useNavigate } from 'react-router-dom'
+import { AppShell, Button, Flex, Footer, Header, Image, Text, Title } from '@mantine/core'
+import { AiFillHome } from 'react-icons/ai'
+import { RiUserSettingsFill } from 'react-icons/ri'
+import { TbListDetails, TbSettings } from 'react-icons/tb'
 
 const OperationsPage = () => {
+    const navigate = useNavigate()
     return (
         <div>
-            <Operations />
+            <AppShell header={
+                <Header className='header' height={"10vh"} style={{ boxShadow: 'rgba(0, 0, 0, 0.45) -6px -15px 9px 13px' }}  >
+                    <div >
+                        <Image ml={"3%"}
+                            style={{ position: "absolute", zIndex: 200 }}
+                            mah={80}
+                            maw={125}
+                            src={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX3UDYwZPTGXmqpEQPSbTpD84a2UmtmMk95Q&s'} />
+                        <Flex justify={"center"}   >
+                            {/* <h2 style={{ paddingLeft: "2%" }}>DD/MM/YYYY</h2> */}
+
+                            {/* <Text fz={"2rem"} fw={}>MANUAL</Text> */}
+                            <Title mt={"0.8rem"}>HOME</Title>
+                            {/* <h2 style={{ paddingRight: "2%", }}>HH:MM:SS</h2> */}
+                        </Flex>
+                    </div>
+                </Header>
+            }
+                footer={
+                    < Footer  >
+                        <Flex className="manualfooter" justify={"center"} align={"center"} gap={"2rem"}>
+                            {/* <Button h={"85%"} w={"8rem"} onClick={() => navigate("/")}>
+                                <Flex direction={"column"} justify={"center"} align={"center"}>
+                                    <AiFillHome size={"2.5rem"} />
+                                    <Text fz={"lg"}>HOME</Text>
+                                </Flex>
+                            </Button> */}
+                            <Button h={"85%"} w={"8rem"} onClick={() => navigate("/manual")}>
+                                <Flex direction={"column"} justify={"center"} align={"center"}>
+                                    <RiUserSettingsFill size={"2.5rem"} />
+                                    <Text fz={"lg"}>MANUAL</Text>
+                                </Flex>
+                            </Button>
+                            <Button h={"85%"} w={"8rem"} onClick={() => navigate("/setting1")}>
+                                <Flex direction={"column"} justify={"center"} align={"center"}>
+                                    <TbSettings size={"2.5rem"} />
+                                    <Text fz={"lg"}>SETTINGS</Text>
+                                </Flex>
+                            </Button>
+
+                            <Button h={"85%"} w={"8rem"} onClick={() => navigate("/input_output")}>
+                                <Flex direction={"column"} justify={"center"} align={"center"}>
+                                    <TbListDetails size={"2.5rem"} />
+                                    <Text fz={"lg"}>I / O</Text>
+                                </Flex>
+                            </Button>
+                            {/* <Button h={"80%"} fz={"xl"} fw={600} mr={"1%"} style={{ backgroundColor: 'rgb(233, 153, 3)' }}>NEXT</Button> */}
+                        </Flex>
+                    </Footer >
+                }>
+                <Operations />
+            </AppShell>
+
         </div>
     )
 }

@@ -1,13 +1,17 @@
-import { Button, Flex, Text } from '@mantine/core'
+import { ActionIcon, Button, Flex, Image, Text } from '@mantine/core'
 import React, { useState } from 'react'
 import "../style.css"
 import { wsUrl } from './config'
+import Logo from '../assets/logo.png'
+import { useNavigate } from 'react-router-dom'
+import { AiFillHome } from 'react-icons/ai'
 const Manual = () => {
     const [mmfStatus, setmmfStatus] = useState(false)
     const [mmrStatus, setmmrStatus] = useState(false)
     const [blowerStatus, setblowerStatus] = useState(false)
     const [heaterStatus, setheaterStatus] = useState(false)
     const [acrStatus, setacrStatus] = useState(false)
+
 
     // let url = `ws://192.168.29.144:8765?screen=Manual`
 
@@ -341,68 +345,67 @@ const Manual = () => {
         // }
     }
     return (
-        <div style={{ height: "100vh" }} >
-            <Flex direction={"column"} justify={"space-between"}>
-                <div className="header">
-                    <h2 style={{ paddingLeft: "2%" }}>DD/MM/YYYY</h2>
-                    <h2>MANUAL</h2>
-                    <h2 style={{ paddingRight: "2%" }}>HH:MM:SS</h2>
-                </div>
+        <div   >
+            {/* <Flex direction={"column"} justify={"space-between"}> */}
 
-                <div style={{ height: "76vh" }}>
-                    <Flex justify={'space-around'} align={"center"} p={'2%'}>
-                        <Text fw={600} className='motoName'>Main motor</Text>
 
-                        <Button w={"8.5%"} fz={"xl"} h={"5rem"} style={{
-                            backgroundColor: mmfStatus ? "green" : "#d10000",
-                            boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.5)"
-                        }} onClick={ForwardsendMessage} >
-                            Forward
-                        </Button>
+            {/* <div style={{ height: "auto", backgroundColor: "#f1f1f1", display: "flex", flexDirection: "column", justifyContent: "center", alignContent: "center" }} > */}
+            <Flex direction={"column"} justify={"center"} >
+                <Flex justify={'space-around'} align={"center"} p={'1%'}>
+                    <Text fw={700} className='motoName'>Main motor</Text>
 
-                        <Button w={"8.5%"} fz={"xl"} h={"5rem"} style={{
-                            backgroundColor: mmrStatus ? "green" : "#d10000",
-                            boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.5)"
-                        }} onClick={ReversesendMessage}>
-                            Reverse
-                        </Button>
-                    </Flex>
+                    <Button w={"8.5%"} fz={"xl"} h={"5rem"} style={{
+                        backgroundColor: mmfStatus ? "green" : "#d10000",
+                        boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.5)"
+                    }} onClick={ForwardsendMessage} >
+                        Forward
+                    </Button>
 
-                    <Flex justify={'space-between'} align={"center"} p={'2%'} w={'52.3vw'}>
-                        <Text pl={'23%'} fw={600} className='motoName'>Blower</Text>
+                    <Button w={"8.5%"} fz={"xl"} h={"5rem"} style={{
+                        backgroundColor: mmrStatus ? "green" : "#d10000",
+                        boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.5)"
+                    }} onClick={ReversesendMessage}>
+                        Reverse
+                    </Button>
+                </Flex>
 
-                        <Button w={"16%"} fz={"xl"} h={"5rem"} style={{
-                            backgroundColor: blowerStatus ? "green" : "#d10000",
-                            boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.5)"
-                        }} onClick={BlowersendMessage}>
-                            {blowerStatus ? "ON" : "OFF"}
-                        </Button>
-                    </Flex>
+                <Flex justify={'space-between'} align={"center"} p={'2%'} w={'52.5vw'}>
+                    <Text pl={'21%'} fw={700} className='motoName'>Blower</Text>
 
-                    <Flex justify={'space-between'} align={"center"} p={'2%'} w={'52.3vw'}>
-                        <Text pl={'23%'} fw={600} className='motoName'>Heater</Text>
+                    <Button w={"8rem"} fz={"xl"} h={"5rem"} style={{
+                        backgroundColor: blowerStatus ? "green" : "#d10000",
+                        boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.5)"
+                    }} onClick={BlowersendMessage}>
+                        {blowerStatus ? "ON" : "OFF"}
+                    </Button>
+                </Flex>
 
-                        <Button w={"16%"} fz={"xl"} h={"5rem"} style={{
-                            backgroundColor: heaterStatus ? "green" : "#d10000",
-                            boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.5)"
-                        }} onClick={HeatersendMessage}>
-                            {heaterStatus ? "ON" : "OFF"}
-                        </Button>
-                    </Flex>
+                <Flex justify={'space-between'} align={"center"} p={'2%'} w={'52.5vw'}>
+                    <Text pl={'21%'} fw={700} className='motoName'>Heater</Text>
 
-                    <Flex justify={'space-between'} align={"center"} p={'2%'} w={'52.3vw'}>
-                        <Text pl={'23%'} fw={600} className='motoName'>ACR</Text>
+                    <Button w={"8rem"} fz={"xl"} h={"5rem"} style={{
+                        backgroundColor: heaterStatus ? "green" : "#d10000",
+                        boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.5)"
+                    }} onClick={HeatersendMessage}>
+                        {heaterStatus ? "ON" : "OFF"}
+                    </Button>
+                </Flex>
 
-                        <Button w={"16%"} fz={"xl"} h={"5rem"} style={{
-                            backgroundColor: acrStatus ? "green" : "#d10000",
-                            boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.5)"
-                        }} onClick={ACRsendMessage}>
-                            {acrStatus ? "ON" : "OFF"}
-                        </Button>
-                    </Flex>
-                </div>
+                <Flex justify={'space-between'} align={"center"} p={'2%'} w={'52.5vw'}>
+                    <Text pl={'21%'} fw={700} className='motoName'>ACR</Text>
 
-                {/* <div class="manualfooter">
+                    <Button w={"8rem"} fz={"xl"} h={"5rem"} style={{
+                        backgroundColor: acrStatus ? "green" : "#d10000",
+                        boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.5)"
+                    }} onClick={ACRsendMessage}>
+                        {acrStatus ? "ON" : "OFF"}
+                    </Button>
+                </Flex>
+            </Flex>
+            {/* </div> */}
+
+
+            {/* <div class="manualfooter">
                     <button id="homeButton" style="height: 80%; width:20%; font-size:x-large; background-color:#007AFF; border: none;
                  border-radius: 8px; color:white; font-weight:600;  margin-left:1%">HOME</button>
                     <button style="height: 80%; width:20%; font-size:x-large; background-color: rgb(233, 153, 3); border: none;
@@ -410,12 +413,9 @@ const Manual = () => {
                 </div> */}
 
 
-                <Flex className="manualfooter" justify={"space-between"} align={"center"}>
-                    <Button h={"80%"} w={"20%"} fz={"xl"} fw={600} ml={"1%"}>HOME</Button>
-                    <Button h={"80%"} w={"20%"} fz={"xl"} fw={600} mr={"1%"} style={{ backgroundColor: 'rgb(233, 153, 3)' }}>NEXT</Button>
-                </Flex>
 
-            </Flex>
+
+            {/* </Flex> */}
 
 
 

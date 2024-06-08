@@ -5,6 +5,7 @@ import Dummy from "./views/Dummy";
 import OperationsPage from "./pages/OperationsPage";
 import Setting_2Page from "./pages/Setting_2Page";
 import Setting_3Page from "./pages/Setting_3Page";
+import Input_OutputPage from "./pages/Input_OutputPage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/setting1" Component={Setting_1Page} />
           <Route path="/setting2" Component={Setting_2Page} />
           <Route path="/setting3" Component={Setting_3Page} />
+          <Route path="/input_output" Component={Input_OutputPage} />
           <Route path="/" Component={OperationsPage} />
           <Route path="/dummy" Component={Dummy} />
 

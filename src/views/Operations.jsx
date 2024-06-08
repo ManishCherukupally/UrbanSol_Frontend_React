@@ -1,4 +1,4 @@
-import { Button, Flex, Group, Text } from '@mantine/core';
+import { Button, Center, Flex, Group, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import React, { useState, useRef, useEffect } from 'react';
 import { wsUrl } from './config';
@@ -7,7 +7,8 @@ import { useNavigate } from 'react-router-dom';
 const Operations = () => {
     const navigate = useNavigate()
     // const url = `ws://192.168.29.144:8765?screen=Operations`;
-    const [status, { toggle }] = useDisclosure(true);
+    // const [status, { toggle }] = useDisclosure(true);
+    const [status, setStatus] = useState(true)
 
     const socketRef = useRef(null);  // Store WebSocket reference
 
@@ -20,12 +21,14 @@ const Operations = () => {
     };
 
     const CycleStart = () => {
-        const messageObj = { Cycle_start: 'On' };
+        setStatus(false)
+        const messageObj = { Cycle_status: 'On' };
         sendMessage(messageObj);
     };
 
     const CycleStop = () => {
-        const messageObj = { Cycle_stop: status };
+        setStatus(true)
+        const messageObj = { Cycle_status: 'Off' };
         sendMessage(messageObj);
     };
 
@@ -37,7 +40,19 @@ const Operations = () => {
 
         socket.onopen = (event) => {
             console.log("websocket established", event);
-        };
+
+        }
+        socket.onmessage = (event) => {
+            const res = JSON.parse(event.data)
+            console.log(res)
+            if (res === 'process_started') {
+                setStatus(false)
+            }
+            else {
+                setStatus(true)
+            }
+        }
+
 
         // Handle errors and cleanup on component unmount
         return () => {
@@ -48,15 +63,35 @@ const Operations = () => {
     }, []);  // Empty dependency array to run only once
 
     return (
-        <div>
-            <Flex justify={"center"} align={"center"} gap={"5rem"} m={"2rem"}>
+        <div style={{ height: "auto" }} >
+            {/* <Flex justify={"center"} align={"center"} gap={"5rem"} m={"2rem"}>
                 <Button onClick={CycleStart}>Cycle Start</Button>
                 <Flex direction={"column"} justify={"center"} gap={"1rem"}>
                     <Button onClick={() => { toggle(); CycleStop(); }}>Cycle End</Button>
                     <Text>Cycle End Status: {status ? 'false' : 'true'}</Text>
                 </Flex>
                 <Button onClick={() => navigate('/setting1')}>Settings</Button>
-            </Flex>
+            </Flex> */}
+
+            <Center>
+                <div style={{
+                    display: "flex",
+                    // alignItems: "center",
+                    justifyContent: "center",
+                    marginTop: "35%",
+                    position: 'absolute',
+                    zIndex: 10,
+                }}>
+                    {status ? (<Button onClick={CycleStart} size='5rem' h={"28rem"} w={"28rem"} radius={"100%"}
+                        style={{ backgroundColor: "green", boxShadow: "0px 0px 25px rgba(0, 0, 0, 0.5)" }}>START</Button>) :
+                        (<Button onClick={CycleStop} size='5rem' h={"28rem"} w={"28rem"} radius={"100%"}
+                            style={{ backgroundColor: "#d10000", boxShadow: "0px 0px 25px rgba(0, 0, 0, 0.5)" }}>STOP</Button>
+                        )}
+                </div>
+
+
+            </Center>
+
         </div>
     );
 };
