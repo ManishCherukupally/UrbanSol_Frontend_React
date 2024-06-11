@@ -21,15 +21,45 @@ const Operations = () => {
     };
 
     const CycleStart = () => {
-        setStatus(false)
-        const messageObj = { Cycle_status: 'On' };
-        sendMessage(messageObj);
+
+        const socket = new WebSocket(`${wsUrl}?screen=Operations`)
+        const messageObj = {
+
+            Cycle_status: 'On'
+        }
+
+
+        socket.onopen = (event) => {
+            // console.log(event)
+            console.log("websocket established", event);
+
+            socket.send(JSON.stringify(messageObj));
+        }
+
+        // setStatus(false)
+        // const messageObj = { Cycle_status: 'On' };
+        // sendMessage(messageObj);
     };
 
     const CycleStop = () => {
-        setStatus(true)
-        const messageObj = { Cycle_status: 'Off' };
-        sendMessage(messageObj);
+
+        const socket = new WebSocket(`${wsUrl}?screen=Operations`)
+        const messageObj = {
+
+            Cycle_status: 'Off'
+        }
+
+
+        socket.onopen = (event) => {
+            // console.log(event)
+            console.log("websocket established", event);
+
+            socket.send(JSON.stringify(messageObj));
+        }
+
+        // setStatus(true)
+        // const messageObj = { Cycle_status: 'Off' };
+        // sendMessage(messageObj);
     };
 
     useEffect(() => {
@@ -45,21 +75,21 @@ const Operations = () => {
         socket.onmessage = (event) => {
             const res = JSON.parse(event.data)
             console.log(res)
-            if (res === 'On') {
+            if (res.Cycle_status === 'On') {
                 setStatus(false)
             }
-            else if (res === 'Off') {
+            else if (res.Cycle_status === 'Off') {
                 setStatus(true)
             }
         }
 
 
         // Handle errors and cleanup on component unmount
-        return () => {
-            if (socket) {
-                socket.close();
-            }
-        };
+        // return () => {
+        //     if (socket) {
+        //         socket.close();
+        //     }
+        // };
     }, []);  // Empty dependency array to run only once
 
     return (

@@ -1,10 +1,11 @@
-import { ActionIcon, Button, Flex, Image, Text } from '@mantine/core'
-import React, { useState } from 'react'
+import { ActionIcon, Button, Flex, Image, Modal, Text } from '@mantine/core'
+import React, { useEffect, useState } from 'react'
 import "../style.css"
 import { wsUrl } from './config'
 import Logo from '../assets/logo.png'
 import { useNavigate } from 'react-router-dom'
 import { AiFillHome } from 'react-icons/ai'
+import OverlayModal from './OverlayModal'
 const Manual = () => {
     const [mmfStatus, setmmfStatus] = useState(false)
     const [mmrStatus, setmmrStatus] = useState(false)
@@ -12,21 +13,44 @@ const Manual = () => {
     const [heaterStatus, setheaterStatus] = useState(false)
     const [acrStatus, setacrStatus] = useState(false)
 
+    const [popupStatus, setpopupStatus] = useState(true)
+    const [popupMessage, setpopupMesaage] = useState("")
+    const [previousPopupStatus, setpreviousPopupStatus] = useState(false)
 
     // let url = `ws://192.168.29.144:8765?screen=Manual`
 
+
     const socket = new WebSocket(`${wsUrl}?screen=Manual`)
 
+    // console.log(previousPopupStatus)
 
+    // useEffect(() => {
+    //     if (previousPopupStatus) {
+    //         setpopupStatus(true);
+    //     }
+    //     else if (previousPopupStatus === false) {
+    //         setpopupStatus(false)
+    //     }
+
+    // }, [previousPopupStatus])
 
     socket.onmessage = (event) => {
         const res = JSON.parse(event.data)
         console.log(res)
+        setpopupMesaage("hiii")
+        // const currentPopupStatus = res.Pop_up;
+
+        // if (previousPopupStatus !== currentPopupStatus) {
+        //     // Update pop-up status only if it has changed
+        //     setpopupMesaage(res.message);
+        //     setpopupStatus(currentPopupStatus);
+        //     setpreviousPopupStatus(currentPopupStatus)
+        // }
 
         mainFunction(res)
     }
     socket.onclose = () => {
-
+        socket.close()
         console.log('websocket connection closed');
         // setTimeout(websocket, reconnectDelay);
 
@@ -34,7 +58,15 @@ const Manual = () => {
     socket.onerror = (error) => {
         console.log("websocket connection error", error)
     }
+
+    window.addEventListener("unload", () => {
+        socket.close();
+    });
+
+
     const mainFunction = (data) => {
+
+
         function ManualData(data) {
             // console.log(data.MMR)
             // let mmf_data = document.getElementById('mmf_status')
@@ -347,7 +379,9 @@ const Manual = () => {
     return (
         <div   >
             {/* <Flex direction={"column"} justify={"space-between"}> */}
-
+            <Modal opened={popupStatus} withCloseButton={false} centered closeOnClickOutside={false}>
+                {popupMessage}
+            </Modal>
 
             {/* <div style={{ height: "auto", backgroundColor: "#f1f1f1", display: "flex", flexDirection: "column", justifyContent: "center", alignContent: "center" }} > */}
             <Flex direction={"column"} justify={"center"} >

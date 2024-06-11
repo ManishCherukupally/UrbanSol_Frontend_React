@@ -82,16 +82,100 @@
 // }
 
 // export default TimeInputConverter;
-// import React from 'react'
-// import OverlayModal from './OverlayModal'
+import React, { useState } from 'react'
+import OverlayModal from './OverlayModal'
+import { Modal } from '@mantine/core'
+import { wsUrl } from './config'
+
+const Dummy = () => {
+    const [status, setStatus] = useState(true)
+    // const socket = new WebSocket(`${wsUrl}?screen=Manual`)
+    const [popupStatus, setpopupStatus] = useState(true)
+    const [popupMessage, setpopupMesaage] = useState("")
+    const [previousPopupStatus, setpreviousPopupStatus] = useState(false)
+
+    // console.log(previousPopupStatus)
+
+    // useEffect(() => {
+    //     if (previousPopupStatus) {
+    //         setpopupStatus(true);
+    //     }
+    //     else if (previousPopupStatus === false) {
+    //         setpopupStatus(false)
+    //     }
+
+    // }, [previousPopupStatus])
+    const socket = new WebSocket(`${wsUrl}?screen=Manual`)
+    socket.onmessage = (event) => {
+        const res = JSON.parse(event.data)
+        // console.log(res)
+        if (res === null) {
+            setpopupMesaage("")
+        } else {
+            setpopupMesaage(res.message)
+        }
+
+        // const currentPopupStatus = res.Pop_up;
+
+        // if (previousPopupStatus !== currentPopupStatus) {
+        //     // Update pop-up status only if it has changed
+        //     setpopupMesaage(res.message);
+        //     setpopupStatus(currentPopupStatus);
+        //     setpreviousPopupStatus(currentPopupStatus)
+        // }
+
+        // mainFunction(res)
+    }
+    //   const { status, message } = props
+
+    return (
+        <div>
+
+            <Modal opened={status} withCloseButton={false} centered closeOnClickOutside={false}>
+                {/* {message} */} hii
+            </Modal>
+
+
+
+        </div>
+    )
+
+}
+
+export default Dummy
+
+// import { Text } from '@mantine/core';
+// import React, { useState } from 'react'
 
 // const Dummy = () => {
+//     // console.log("hii")
+//     const [ip, setIp] = useState("")
+
+//     const pc = new RTCPeerConnection({ iceServers: [] });
+//     const noop = function () { };
+
+//     pc.onicecandidate = function (ice) {
+//         if (ice && ice.candidate && ice.candidate.candidate) {
+//             const myIP = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/.exec(ice.candidate.candidate)[1];
+//             console.log('Your IP address:', myIP);
+//             setIp(myIP)
+//             pc.onicecandidate = noop;
+//         }
+//     };
+
+//     // Create a bogus data channel (optional)
+//     pc.createDataChannel("");
+//     pc.createOffer().catch(noop);
+
+
+
 //     return (
 //         <div>
-//             <OverlayModal />
+//             <Text>Ip address : {ip}</Text>
 //         </div>
 //     )
 // }
 
 // export default Dummy
+
 
