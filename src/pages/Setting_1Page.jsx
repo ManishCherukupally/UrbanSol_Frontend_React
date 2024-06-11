@@ -14,7 +14,7 @@ const Setting_1Page = () => {
                         <Image ml={"3%"}
                             style={{ position: "absolute", zIndex: 200 }}
                             mah={80}
-                            maw={125}
+                            maw={120}
                             src={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX3UDYwZPTGXmqpEQPSbTpD84a2UmtmMk95Q&s'} />
                         <Flex justify={"center"}   >
                             {/* <h2 style={{ paddingLeft: "2%" }}>DD/MM/YYYY</h2> */}

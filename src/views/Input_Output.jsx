@@ -244,7 +244,7 @@ const Input_Output = () => {
                 <Grid>
                     <Grid.Col span={6}>
                         <Flex justify={"center"} align={"center"} direction={"column"}>
-                            <h1 class="title">Input</h1>
+                            <h1 class="title">Inputs</h1>
                             <Card className='input-card' w={"100%"} radius={"md"} >
                                 <Flex justify={"space-between"} align={"center"} ml={"1rem"} mr={"1rem"}>
                                     <Text fz={"1.5rem"} fw={700}>Main Motor Trip</Text>
@@ -295,7 +295,7 @@ const Input_Output = () => {
 
                     <Grid.Col span={6}>
                         <Flex justify={"center"} align={"center"} direction={"column"}>
-                            <h1 class="title">Output</h1>
+                            <h1 class="title">Outputs</h1>
                             <Card className='output-card' w={"100%"} radius={"md"} >
                                 <Flex justify={"space-between"} align={"center"} ml={"1rem"} mr={"1rem"}>
                                     <Text fz={"1.5rem"} fw={700}>Main Motor Forward</Text>

@@ -45,10 +45,10 @@ const Operations = () => {
         socket.onmessage = (event) => {
             const res = JSON.parse(event.data)
             console.log(res)
-            if (res === 'process_started') {
+            if (res === 'On') {
                 setStatus(false)
             }
-            else {
+            else if (res === 'Off') {
                 setStatus(true)
             }
         }

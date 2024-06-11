@@ -20,7 +20,7 @@ const Input_OutputPage = () => {
                             {/* <h2 style={{ paddingLeft: "2%" }}>DD/MM/YYYY</h2> */}
 
                             {/* <Text fz={"2rem"} fw={}>MANUAL</Text> */}
-                            <Title mt={"0.8rem"}>INPUT / OUTPUT</Title>
+                            <Title mt={"0.8rem"}>INPUTS / OUTPUTS</Title>
                             {/* <h2 style={{ paddingRight: "2%", }}>HH:MM:SS</h2> */}
                         </Flex>
                     </div>
