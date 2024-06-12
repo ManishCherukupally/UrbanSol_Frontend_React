@@ -16,13 +16,13 @@ const OperationsPage = () => {
                         <Image ml={"3%"}
                             style={{ position: "absolute", zIndex: 200 }}
                             mah={80}
-                            maw={125}
+                            maw={100}
                             src={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX3UDYwZPTGXmqpEQPSbTpD84a2UmtmMk95Q&s'} />
                         <Flex justify={"center"}   >
                             {/* <h2 style={{ paddingLeft: "2%" }}>DD/MM/YYYY</h2> */}
 
                             {/* <Text fz={"2rem"} fw={}>MANUAL</Text> */}
-                            <Title mt={"0.8rem"}>HOME</Title>
+                            <Title mt={"0.5rem"}>HOME</Title>
                             {/* <h2 style={{ paddingRight: "2%", }}>HH:MM:SS</h2> */}
                         </Flex>
                     </div>

@@ -35,6 +35,16 @@ const Operations = () => {
 
             socket.send(JSON.stringify(messageObj));
         }
+        socket.onmessage = (event) => {
+            const res = JSON.parse(event.data)
+            console.log(res)
+            if (res.Cycle_status === 'On') {
+                setStatus(false)
+            }
+            else if (res.Cycle_status === 'Off') {
+                setStatus(true)
+            }
+        }
 
         // setStatus(false)
         // const messageObj = { Cycle_status: 'On' };
@@ -55,6 +65,16 @@ const Operations = () => {
             console.log("websocket established", event);
 
             socket.send(JSON.stringify(messageObj));
+        }
+        socket.onmessage = (event) => {
+            const res = JSON.parse(event.data)
+            console.log(res)
+            if (res.Cycle_status === 'On') {
+                setStatus(false)
+            }
+            else if (res.Cycle_status === 'Off') {
+                setStatus(true)
+            }
         }
 
         // setStatus(true)
@@ -105,16 +125,19 @@ const Operations = () => {
 
             <Center>
                 <div style={{
+
+                    width: "100vw",
                     display: "flex",
                     // alignItems: "center",
                     justifyContent: "center",
-                    marginTop: "35%",
+                    alignItems: "center",
+                    marginTop: "40%",
                     position: 'absolute',
                     zIndex: 10,
                 }}>
-                    {status ? (<Button onClick={CycleStart} size='5rem' h={"28rem"} w={"28rem"} radius={"100%"}
+                    {status ? (<Button onClick={CycleStart} size='5rem' h={"22rem"} w={"22rem"} radius={"100%"}
                         style={{ backgroundColor: "green", boxShadow: "0px 0px 25px rgba(0, 0, 0, 0.5)" }}>START</Button>) :
-                        (<Button onClick={CycleStop} size='5rem' h={"28rem"} w={"28rem"} radius={"100%"}
+                        (<Button onClick={CycleStop} size='5rem' h={"22rem"} w={"22rem"} radius={"100%"}
                             style={{ backgroundColor: "#d10000", boxShadow: "0px 0px 25px rgba(0, 0, 0, 0.5)" }}>STOP</Button>
                         )}
                 </div>

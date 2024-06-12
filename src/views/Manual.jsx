@@ -37,7 +37,7 @@ const Manual = () => {
     socket.onmessage = (event) => {
         const res = JSON.parse(event.data)
         console.log(res)
-        setpopupMesaage("hiii")
+        setpopupMesaage(res.message)
         // const currentPopupStatus = res.Pop_up;
 
         // if (previousPopupStatus !== currentPopupStatus) {
@@ -379,23 +379,23 @@ const Manual = () => {
     return (
         <div   >
             {/* <Flex direction={"column"} justify={"space-between"}> */}
-            {/* <Modal opened={popupStatus} withCloseButton={false} centered closeOnClickOutside={false}>
+            <Modal opened={popupStatus} withCloseButton={false} centered closeOnClickOutside={false}>
                 {popupMessage}
-            </Modal> */}
+            </Modal>
 
             {/* <div style={{ height: "auto", backgroundColor: "#f1f1f1", display: "flex", flexDirection: "column", justifyContent: "center", alignContent: "center" }} > */}
             <Flex direction={"column"} justify={"center"} >
                 <Flex justify={'space-around'} align={"center"} p={'1%'}>
                     <Text fw={700} className='motoName'>Main motor</Text>
 
-                    <Button w={"8.5%"} fz={"xl"} h={"5rem"} style={{
+                    <Button w={"14%"} fz={"xl"} h={"4.5rem"} style={{
                         backgroundColor: mmfStatus ? "green" : "#d10000",
                         boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.5)"
                     }} onClick={ForwardsendMessage} >
                         Forward
                     </Button>
 
-                    <Button w={"8.5%"} fz={"xl"} h={"5rem"} style={{
+                    <Button w={"14%"} fz={"xl"} h={"4.5rem"} style={{
                         backgroundColor: mmrStatus ? "green" : "#d10000",
                         boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.5)"
                     }} onClick={ReversesendMessage}>
