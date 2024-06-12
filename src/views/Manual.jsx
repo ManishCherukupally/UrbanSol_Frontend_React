@@ -379,9 +379,9 @@ const Manual = () => {
     return (
         <div   >
             {/* <Flex direction={"column"} justify={"space-between"}> */}
-            <Modal opened={popupStatus} withCloseButton={false} centered closeOnClickOutside={false}>
+            {/* <Modal opened={popupStatus} withCloseButton={false} centered closeOnClickOutside={false}>
                 {popupMessage}
-            </Modal>
+            </Modal> */}
 
             {/* <div style={{ height: "auto", backgroundColor: "#f1f1f1", display: "flex", flexDirection: "column", justifyContent: "center", alignContent: "center" }} > */}
             <Flex direction={"column"} justify={"center"} >
