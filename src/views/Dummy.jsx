@@ -82,67 +82,67 @@
 // }
 
 // export default TimeInputConverter;
-import React, { useState } from 'react'
-import OverlayModal from './OverlayModal'
-import { Modal } from '@mantine/core'
-import { wsUrl } from './config'
+// import React, { useState } from 'react'
+// import OverlayModal from './OverlayModal'
+// import { Modal } from '@mantine/core'
+// import { wsUrl } from './config'
 
-const Dummy = () => {
-    const [status, setStatus] = useState(true)
-    // const socket = new WebSocket(`${wsUrl}?screen=Manual`)
-    const [popupStatus, setpopupStatus] = useState(true)
-    const [popupMessage, setpopupMesaage] = useState("")
-    const [previousPopupStatus, setpreviousPopupStatus] = useState(false)
+// const Dummy = () => {
+//     const [status, setStatus] = useState(true)
+//     // const socket = new WebSocket(`${wsUrl}?screen=Manual`)
+//     const [popupStatus, setpopupStatus] = useState(true)
+//     const [popupMessage, setpopupMesaage] = useState("")
+//     const [previousPopupStatus, setpreviousPopupStatus] = useState(false)
 
-    // console.log(previousPopupStatus)
+//     // console.log(previousPopupStatus)
 
-    // useEffect(() => {
-    //     if (previousPopupStatus) {
-    //         setpopupStatus(true);
-    //     }
-    //     else if (previousPopupStatus === false) {
-    //         setpopupStatus(false)
-    //     }
+//     // useEffect(() => {
+//     //     if (previousPopupStatus) {
+//     //         setpopupStatus(true);
+//     //     }
+//     //     else if (previousPopupStatus === false) {
+//     //         setpopupStatus(false)
+//     //     }
 
-    // }, [previousPopupStatus])
-    const socket = new WebSocket(`${wsUrl}?screen=Manual`)
-    socket.onmessage = (event) => {
-        const res = JSON.parse(event.data)
-        // console.log(res)
-        if (res === null) {
-            setpopupMesaage("")
-        } else {
-            setpopupMesaage(res.message)
-        }
+//     // }, [previousPopupStatus])
+//     const socket = new WebSocket(`${wsUrl}?screen=Manual`)
+//     socket.onmessage = (event) => {
+//         const res = JSON.parse(event.data)
+//         // console.log(res)
+//         if (res === null) {
+//             setpopupMesaage("")
+//         } else {
+//             setpopupMesaage(res.message)
+//         }
 
-        // const currentPopupStatus = res.Pop_up;
+//         // const currentPopupStatus = res.Pop_up;
 
-        // if (previousPopupStatus !== currentPopupStatus) {
-        //     // Update pop-up status only if it has changed
-        //     setpopupMesaage(res.message);
-        //     setpopupStatus(currentPopupStatus);
-        //     setpreviousPopupStatus(currentPopupStatus)
-        // }
+//         // if (previousPopupStatus !== currentPopupStatus) {
+//         //     // Update pop-up status only if it has changed
+//         //     setpopupMesaage(res.message);
+//         //     setpopupStatus(currentPopupStatus);
+//         //     setpreviousPopupStatus(currentPopupStatus)
+//         // }
 
-        // mainFunction(res)
-    }
-    //   const { status, message } = props
+//         // mainFunction(res)
+//     }
+//     //   const { status, message } = props
 
-    return (
-        <div>
+//     return (
+//         <div>
 
-            <Modal opened={status} withCloseButton={false} centered closeOnClickOutside={false}>
-                {/* {message} */} hii
-            </Modal>
+//             <Modal opened={status} withCloseButton={false} centered closeOnClickOutside={false}>
+//                 {/* {message} */} hii
+//             </Modal>
 
 
 
-        </div>
-    )
+//         </div>
+//     )
 
-}
+// }
 
-export default Dummy
+// export default Dummy
 
 // import { Text } from '@mantine/core';
 // import React, { useState } from 'react'
@@ -177,5 +177,51 @@ export default Dummy
 // }
 
 // export default Dummy
+
+
+
+import React, { useEffect, useState } from 'react'
+import { wsUrl } from './config';
+import { Link } from 'react-router-dom';
+import { Button } from '@mantine/core';
+
+const Dummy = () => {
+    const [socket, setSocket] = useState(null);
+
+    useEffect(() => {
+        const newSocket = new WebSocket(`${wsUrl}?screen=Manual`); // Replace with your URL
+        // newSocket.close()
+        newSocket.onopen = () => {
+            console.log('WebSocket connection opened');
+            setSocket(newSocket);
+        };
+
+        newSocket.onmessage = (event) => {
+            const res = JSON.parse(event.data)
+            console.log(res)
+        }
+
+        return () => {
+            if (socket) {
+                socket.close();
+                console.log('WebSocket connection closed');
+            }
+        };
+    }, []);
+
+    return (
+        <div>
+            {/* <Link to="/">
+                click here
+            </Link> */}
+            <Button onClick={() => {
+                const newSocket = new WebSocket(`${wsUrl}?screen=Manual`); // Replace with your URL
+                newSocket.close()
+            }}>Click here</Button>
+        </div>
+    )
+}
+
+export default Dummy
 
 

@@ -39,20 +39,20 @@ const OperationsPage = () => {
                             </Button> */}
                             <Button h={"85%"} w={"8rem"} onClick={() => navigate("/manual")}>
                                 <Flex direction={"column"} justify={"center"} align={"center"}>
-                                    <RiUserSettingsFill size={"2.5rem"} />
+                                    <RiUserSettingsFill size={"2rem"} />
                                     <Text fz={"lg"}>MANUAL</Text>
                                 </Flex>
                             </Button>
                             <Button h={"85%"} w={"8rem"} onClick={() => navigate("/setting1")}>
                                 <Flex direction={"column"} justify={"center"} align={"center"}>
-                                    <TbSettings size={"2.5rem"} />
+                                    <TbSettings size={"2rem"} />
                                     <Text fz={"lg"}>SETTINGS</Text>
                                 </Flex>
                             </Button>
 
                             <Button h={"85%"} w={"8rem"} onClick={() => navigate("/input_output")}>
                                 <Flex direction={"column"} justify={"center"} align={"center"}>
-                                    <TbListDetails size={"2.5rem"} />
+                                    <TbListDetails size={"2rem"} />
                                     <Text fz={"lg"}>I / O</Text>
                                 </Flex>
                             </Button>

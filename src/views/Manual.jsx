@@ -379,9 +379,9 @@ const Manual = () => {
     return (
         <div   >
             {/* <Flex direction={"column"} justify={"space-between"}> */}
-            <Modal opened={popupStatus} withCloseButton={false} centered closeOnClickOutside={false}>
+            {/* <Modal opened={popupStatus} withCloseButton={false} centered closeOnClickOutside={false}>
                 {popupMessage}
-            </Modal>
+            </Modal> */}
 
             {/* <div style={{ height: "auto", backgroundColor: "#f1f1f1", display: "flex", flexDirection: "column", justifyContent: "center", alignContent: "center" }} > */}
             <Flex direction={"column"} justify={"center"} >
@@ -403,10 +403,10 @@ const Manual = () => {
                     </Button>
                 </Flex>
 
-                <Flex justify={'space-between'} align={"center"} p={'2%'} w={'52.5vw'}>
-                    <Text pl={'21%'} fw={700} className='motoName'>Blower</Text>
+                <Flex justify={'space-between'} align={"center"} p={'2%'} w={'53vw'}>
+                    <Text pl={'16%'} fw={700} className='motoName'>Blower</Text>
 
-                    <Button w={"8rem"} fz={"xl"} h={"5rem"} style={{
+                    <Button w={"8.5rem"} fz={"xl"} h={"4.5rem"} style={{
                         backgroundColor: blowerStatus ? "green" : "#d10000",
                         boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.5)"
                     }} onClick={BlowersendMessage}>
@@ -414,10 +414,10 @@ const Manual = () => {
                     </Button>
                 </Flex>
 
-                <Flex justify={'space-between'} align={"center"} p={'2%'} w={'52.5vw'}>
-                    <Text pl={'21%'} fw={700} className='motoName'>Heater</Text>
+                <Flex justify={'space-between'} align={"center"} p={'2%'} w={'53vw'}>
+                    <Text pl={'16%'} fw={700} className='motoName'>Heater</Text>
 
-                    <Button w={"8rem"} fz={"xl"} h={"5rem"} style={{
+                    <Button w={"8.5rem"} fz={"xl"} h={"4.5rem"} style={{
                         backgroundColor: heaterStatus ? "green" : "#d10000",
                         boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.5)"
                     }} onClick={HeatersendMessage}>
@@ -425,10 +425,10 @@ const Manual = () => {
                     </Button>
                 </Flex>
 
-                <Flex justify={'space-between'} align={"center"} p={'2%'} w={'52.5vw'}>
-                    <Text pl={'21%'} fw={700} className='motoName'>ACR</Text>
+                <Flex justify={'space-between'} align={"center"} p={'2%'} w={'53vw'}>
+                    <Text pl={'16%'} fw={700} className='motoName'>ACR</Text>
 
-                    <Button w={"8rem"} fz={"xl"} h={"5rem"} style={{
+                    <Button w={"8.5rem"} fz={"xl"} h={"4.5rem"} style={{
                         backgroundColor: acrStatus ? "green" : "#d10000",
                         boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.5)"
                     }} onClick={ACRsendMessage}>
