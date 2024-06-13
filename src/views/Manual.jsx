@@ -19,49 +19,57 @@ const Manual = () => {
 
     // let url = `ws://192.168.29.144:8765?screen=Manual`
 
+    useEffect(() => {
+        const socket = new WebSocket(`${wsUrl}?screen=Manual`)
 
-    const socket = new WebSocket(`${wsUrl}?screen=Manual`)
+        // console.log(previousPopupStatus)
 
-    // console.log(previousPopupStatus)
+        // useEffect(() => {
+        //     if (previousPopupStatus) {
+        //         setpopupStatus(true);
+        //     }
+        //     else if (previousPopupStatus === false) {
+        //         setpopupStatus(false)
+        //     }
 
-    // useEffect(() => {
-    //     if (previousPopupStatus) {
-    //         setpopupStatus(true);
-    //     }
-    //     else if (previousPopupStatus === false) {
-    //         setpopupStatus(false)
-    //     }
+        // }, [previousPopupStatus])
 
-    // }, [previousPopupStatus])
+        socket.onmessage = (event) => {
+            const res = JSON.parse(event.data)
+            console.log(res)
+            // setpopupMesaage(res.message)
+            // const currentPopupStatus = res.Pop_up;
 
-    socket.onmessage = (event) => {
-        const res = JSON.parse(event.data)
-        console.log(res)
-        setpopupMesaage(res.message)
-        // const currentPopupStatus = res.Pop_up;
+            // if (previousPopupStatus !== currentPopupStatus) {
+            //     // Update pop-up status only if it has changed
+            //     setpopupMesaage(res.message);
+            //     setpopupStatus(currentPopupStatus);
+            //     setpreviousPopupStatus(currentPopupStatus)
+            // }
 
-        // if (previousPopupStatus !== currentPopupStatus) {
-        //     // Update pop-up status only if it has changed
-        //     setpopupMesaage(res.message);
-        //     setpopupStatus(currentPopupStatus);
-        //     setpreviousPopupStatus(currentPopupStatus)
-        // }
+            mainFunction(res)
+        }
+        socket.onclose = () => {
+            socket.close()
+            console.log('websocket connection closed');
+            // setTimeout(websocket, reconnectDelay);
 
-        mainFunction(res)
-    }
-    socket.onclose = () => {
-        socket.close()
-        console.log('websocket connection closed');
-        // setTimeout(websocket, reconnectDelay);
+        }
+        socket.onerror = (error) => {
+            console.log("websocket connection error", error)
+        }
+        return () => {
+            if (socket) {
+                console.log('WebSocket connection closed: close event');
+                socket.close();
+            }
+        };
+    })
 
-    }
-    socket.onerror = (error) => {
-        console.log("websocket connection error", error)
-    }
 
-    window.addEventListener("unload", () => {
-        socket.close();
-    });
+    // window.addEventListener("unload", () => {
+    //     socket.close();
+    // });
 
 
     const mainFunction = (data) => {

@@ -14,13 +14,13 @@ const Input_OutputPage = () => {
                         <Image ml={"3%"}
                             style={{ position: "absolute", zIndex: 200 }}
                             mah={80}
-                            maw={120}
+                            maw={100}
                             src={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX3UDYwZPTGXmqpEQPSbTpD84a2UmtmMk95Q&s'} />
                         <Flex justify={"center"}   >
                             {/* <h2 style={{ paddingLeft: "2%" }}>DD/MM/YYYY</h2> */}
 
                             {/* <Text fz={"2rem"} fw={}>MANUAL</Text> */}
-                            <Title mt={"0.8rem"}>INPUTS / OUTPUTS</Title>
+                            <Title mt={"0.5rem"}>INPUTS / OUTPUTS</Title>
                             {/* <h2 style={{ paddingRight: "2%", }}>HH:MM:SS</h2> */}
                         </Flex>
                     </div>
@@ -31,7 +31,7 @@ const Input_OutputPage = () => {
                         <Flex className="manualfooter" align={"center"}>
                             <Button h={"80%"} ml={"1%"} onClick={() => navigate("/")}>
                                 <Flex direction={"column"} justify={"center"} align={"center"}>
-                                    <AiFillHome size={"2.5rem"} />
+                                    <AiFillHome size={"2rem"} />
                                     <Text fz={"lg"}>HOME</Text>
                                 </Flex>
                             </Button>

@@ -15,13 +15,13 @@ const Setting_2Page = () => {
                         <Image ml={"3%"}
                             style={{ position: "absolute", zIndex: 200 }}
                             mah={80}
-                            maw={125}
+                            maw={100}
                             src={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX3UDYwZPTGXmqpEQPSbTpD84a2UmtmMk95Q&s'} />
                         <Flex justify={"center"}   >
                             {/* <h2 style={{ paddingLeft: "2%" }}>DD/MM/YYYY</h2> */}
 
                             {/* <Text fz={"2rem"} fw={}>MANUAL</Text> */}
-                            <Title mt={"1.2rem"}>SETTINGS</Title>
+                            <Title mt={"0.5rem"}>SETTINGS</Title>
                             {/* <h2 style={{ paddingRight: "2%", }}>HH:MM:SS</h2> */}
                         </Flex>
                     </div>
@@ -30,9 +30,9 @@ const Setting_2Page = () => {
                 footer={
                     < Footer  >
                         <Flex className="stng1footer" align={"center"}>
-                            <Button h={"6rem"} w={"6rem"} ml={"1%"} onClick={() => navigate("/")}>
+                            <Button h={"80%"} w={"6rem"} ml={"1%"} onClick={() => navigate("/")}>
                                 <Flex direction={"column"} justify={"center"} align={"center"}>
-                                    <AiFillHome size={"2.5rem"} />
+                                    <AiFillHome size={"2rem"} />
                                     <Text fz={"lg"}>HOME</Text>
                                 </Flex>
                             </Button>

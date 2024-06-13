@@ -136,7 +136,7 @@ const Setting_1 = () => {
     //     setTcTime(event.currentTarget.value);
     // };
     return (
-        <div style={{ height: "100vh" }} >
+        <div style={{ height: "120vh" }} >
             {/* <Flex direction={"column"} justify={"space-between"}> */}
             {/* <div class="header">
                     <h2 style={{ paddingLeft: "2%" }}>DD/MM/YYYY</h2>
@@ -161,9 +161,9 @@ const Setting_1 = () => {
                 <Grid.Col span={2}>
 
                 </Grid.Col>
-                <Grid.Col span={9} >
+                <Grid.Col span={8} >
 
-                    <SimpleGrid cols={3} spacing={"4rem"} verticalSpacing={"3rem"} justify="center">
+                    <SimpleGrid cols={3} spacing={"4rem"} verticalSpacing={"2.5rem"} justify="center">
                         <h2></h2>
 
                         <Text fz={"xl"} fw={700}>Set Value</Text>
@@ -211,18 +211,18 @@ const Setting_1 = () => {
                             <Group>
                                 <Flex align={"center"} gap={10}>
                                     <Text fz={"xl"} fw={600}>{getTcHours}</Text>
-                                    <Text fz={"xl"} fw={600}>Hrs </Text>
+                                    <Text fz={"xl"} fw={600}>H </Text>
                                     <Text fz={"xl"} fw={600}>:</Text>
                                 </Flex>
                                 <Flex align={"center"} gap={10}>
                                     <Text fz={"xl"} fw={600}>{getTcMinutes}</Text>
-                                    <Text fz={"xl"} fw={600}>Min </Text>
+                                    <Text fz={"xl"} fw={600}>M </Text>
                                     <Text fz={"xl"} fw={600}>:</Text>
                                 </Flex>
                                 <Flex align={"center"} gap={3}>
                                     <Text fz={"xl"} fw={600}>{getTcSeconds}</Text>
 
-                                    <Text fz={"xl"} fw={600}>Sec</Text>
+                                    <Text fz={"xl"} fw={600}>S</Text>
                                 </Flex>
                             </Group>
                         }
@@ -337,18 +337,18 @@ const Setting_1 = () => {
                             <Group>
                                 <Flex align={"baseline"} gap={10}>
                                     <Text fz={"xl"} fw={600}>{getwaitCycleHours}</Text>
-                                    <Text fz={"xl"} fw={600}>Hrs </Text>
+                                    <Text fz={"xl"} fw={600}>H </Text>
                                     <Text fz={"xl"} fw={600}>:</Text>
                                 </Flex>
                                 <Flex align={"baseline"} gap={10}>
                                     <Text fz={"xl"} fw={600}>{getwaitCycleMinutes}</Text>
-                                    <Text fz={"xl"} fw={600}>Min </Text>
+                                    <Text fz={"xl"} fw={600}>M </Text>
                                     <Text fz={"xl"} fw={600}>:</Text>
                                 </Flex>
                                 <Flex align={"baseline"} gap={10}>
                                     <Text fz={"xl"} fw={600}>{getwaitCycleSeconds}</Text>
 
-                                    <Text fz={"xl"} fw={600}>Sec</Text>
+                                    <Text fz={"xl"} fw={600}>S</Text>
                                 </Flex>
                             </Group>
                         }
@@ -358,11 +358,11 @@ const Setting_1 = () => {
                     </SimpleGrid>
 
                 </Grid.Col>
-                <Grid.Col span={1} style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                <Grid.Col span={2} style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
 
-                    <Button h={"3rem"} fz={"xl"} fw={600} mr={"1%"} style={{ backgroundColor: 'rgb(233, 153, 3)' }}
+                    <Button h={"3rem"} fullWidth fz={"lg"} fw={600} mr={"1%"} style={{ backgroundColor: 'rgb(233, 153, 3)' }}
                         onClick={() => navigate('/setting2')}>NEXT</Button>
-                    <Button id="saveButton" onClick={handleSaveButton} fz={"xl"} h={"3rem"} fullWidth style={{ backgroundColor: "#d10000" }}>Save</Button>
+                    <Button id="saveButton" onClick={handleSaveButton} fz={"lg"} h={"3rem"} fullWidth style={{ backgroundColor: "#d10000" }}>Save</Button>
 
                 </Grid.Col>
             </Grid>

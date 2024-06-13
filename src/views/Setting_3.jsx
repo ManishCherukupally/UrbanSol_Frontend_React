@@ -101,7 +101,7 @@ const Setting_3 = () => {
 
     }
     return (
-        <div style={{ height: "100vh" }}>
+        <div style={{ height: "120vh" }}>
             {/* <Flex direction={"column"} justify={"space-between"}> */}
             {/* <div class="header">
                     <h2 style={{ paddingLeft: "2%" }}>DD/MM/YYYY</h2>
@@ -124,11 +124,11 @@ const Setting_3 = () => {
                     </Card> */}
             <Grid >
                 <Grid.Col span={2}>
-                    <Button h={"3rem"} fz={"xl"} fw={600} style={{ backgroundColor: 'rgb(233, 153, 3)' }} onClick={() => navigate('/setting2')}>BACK</Button>
+                    <Button fullWidth h={"3rem"} fz={"xl"} fw={600} style={{ backgroundColor: 'rgb(233, 153, 3)' }} onClick={() => navigate('/setting2')}>BACK</Button>
                 </Grid.Col>
-                <Grid.Col span={9}>
+                <Grid.Col span={8}>
 
-                    <SimpleGrid cols={3} spacing={"4rem"} verticalSpacing={"3.85rem"} justify="center">
+                    <SimpleGrid cols={3} spacing={"4rem"} verticalSpacing={"2.5rem"} justify="center">
                         <h2></h2>
                         {/* <Text fz={"xl"} fw={700}>Present Time</Text> */}
                         <Text fz={"xl"} fw={700}>Set Value</Text>
@@ -219,7 +219,7 @@ const Setting_3 = () => {
                     </SimpleGrid>
 
                 </Grid.Col>
-                <Grid.Col span={1} style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                <Grid.Col span={2} style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
 
                     {/* <Button h={"3rem"} fz={"xl"} fw={600} mr={"1%"} style={{ backgroundColor: 'rgb(233, 153, 3)' }}
                         onClick={() => navigate('/setting3')}>NEXT</Button> */}

@@ -1,4 +1,4 @@
-import { Button, Card, Center, Container, Divider, Flex, Grid, Space, Text } from '@mantine/core'
+import { Button, Card, Center, Container, Divider, Flex, Grid, ScrollArea, Space, Text } from '@mantine/core'
 import React, { useState } from 'react'
 import { wsUrl } from './config'
 
@@ -244,99 +244,100 @@ const Input_Output = () => {
                 <Grid>
                     <Grid.Col span={6}>
                         <Flex justify={"center"} align={"center"} direction={"column"}>
-                            <h1 class="title">Inputs</h1>
-                            <Card className='input-card' w={"100%"} radius={"md"} >
-                                <Flex justify={"space-between"} align={"center"} ml={"1rem"} mr={"1rem"}>
-                                    <Text fz={"1.5rem"} fw={700}>Main Motor Trip</Text>
+                            <h2 class="title">Inputs</h2>
+                            <Card className='input-card' w={"100%"} h={"auto"} radius={"md"} >
+                                <ScrollArea h={"96%"} type='always' scrollbarSize={6} offsetScrollbars>
+                                    <Flex justify={"space-between"} align={"center"} ml={"1rem"} mr={"1rem"}>
+                                        <Text fz={"lg"} fw={700}>Main Motor Trip</Text>
 
-                                    <Card align={"center"} w={"5rem"} radius={10} bg={mmt ? "green" : "#d10000"} c={"white"} fz={"lg"} fw={600}>{mmt ? 'ON' : 'OFF'} </Card>
-                                </Flex>
-                                <Space h={15} />
-                                <Divider variant='dashed' />
-                                <Space h={15} />
+                                        <Card align={"center"} w={"5rem"} radius={10} bg={mmt ? "green" : "#d10000"} c={"white"} fz={"md"} fw={600}>{mmt ? 'ON' : 'OFF'} </Card>
+                                    </Flex>
+                                    <Space h={15} />
+                                    <Divider variant='dashed' />
+                                    <Space h={15} />
 
-                                <Flex justify={"space-between"} align={"center"} ml={"1rem"} mr={"1rem"}>
-                                    <Text fz={"1.5rem"} fw={700}>Blower Motor Trip</Text>
+                                    <Flex justify={"space-between"} align={"center"} ml={"1rem"} mr={"1rem"}>
+                                        <Text fz={"lg"} fw={700}>Blower Motor Trip</Text>
 
-                                    <Card align={"center"} w={"5rem"} radius={10} bg={bmt ? "green" : "#d10000"} c={"white"} fz={"lg"} fw={600}>{bmt ? 'ON' : 'OFF'}</Card>
-                                </Flex>
-                                <Space h={15} />
-                                <Divider variant='dashed' />
-                                <Space h={15} />
+                                        <Card align={"center"} w={"5rem"} radius={10} bg={bmt ? "green" : "#d10000"} c={"white"} fz={"md"} fw={600}>{bmt ? 'ON' : 'OFF'}</Card>
+                                    </Flex>
+                                    <Space h={15} />
+                                    <Divider variant='dashed' />
+                                    <Space h={15} />
 
-                                <Flex justify={"space-between"} align={"center"} ml={"1rem"} mr={"1rem"}>
-                                    <Text fz={"1.5rem"} fw={700}>Door Open</Text>
+                                    <Flex justify={"space-between"} align={"center"} ml={"1rem"} mr={"1rem"}>
+                                        <Text fz={"lg"} fw={700}>Door Open</Text>
 
-                                    <Card align={"center"} w={"5rem"} radius={10} bg={doorOpen ? "green" : "#d10000"} c={"white"} fz={"lg"} fw={600}>{doorOpen ? 'ON' : 'OFF'}</Card>
-                                </Flex>
-                                <Space h={15} />
-                                <Divider variant='dashed' />
-                                <Space h={15} />
+                                        <Card align={"center"} w={"5rem"} radius={10} bg={doorOpen ? "green" : "#d10000"} c={"white"} fz={"md"} fw={600}>{doorOpen ? 'ON' : 'OFF'}</Card>
+                                    </Flex>
+                                    <Space h={15} />
+                                    <Divider variant='dashed' />
+                                    <Space h={15} />
 
-                                <Flex justify={"space-between"} align={"center"} ml={"1rem"} mr={"1rem"}>
-                                    <Text fz={"1.5rem"} fw={700}>Spp OK</Text>
+                                    <Flex justify={"space-between"} align={"center"} ml={"1rem"} mr={"1rem"}>
+                                        <Text fz={"lg"} fw={700}>Spp OK</Text>
 
-                                    <Card align={"center"} w={"5rem"} radius={10} bg={spp ? "green" : "#d10000"} c={"white"} fz={"lg"} fw={600}>{spp ? 'ON' : 'OFF'}</Card>
-                                </Flex>
-                                <Space h={15} />
-                                <Divider variant='dashed' />
-                                <Space h={15} />
+                                        <Card align={"center"} w={"5rem"} radius={10} bg={spp ? "green" : "#d10000"} c={"white"} fz={"md"} fw={600}>{spp ? 'ON' : 'OFF'}</Card>
+                                    </Flex>
+                                    <Space h={15} />
+                                    <Divider variant='dashed' />
+                                    <Space h={15} />
 
-                                <Flex justify={"space-between"} align={"center"} ml={"1rem"} mr={"1rem"}>
-                                    <Text fz={"1.5rem"} fw={700}>Emergency Switch</Text>
+                                    <Flex justify={"space-between"} align={"center"} ml={"1rem"} mr={"1rem"}>
+                                        <Text fz={"lg"} fw={700}>Emergency Switch</Text>
 
-                                    <Card align={"center"} w={"5rem"} radius={10} bg={emergency ? "green" : "#d10000"} c={"white"} fz={"lg"} fw={600}>{emergency ? 'ON' : 'OFF'}</Card>
-                                </Flex>
-                                {/* <Space h={15} /> */}
-
+                                        <Card align={"center"} w={"5rem"} radius={10} bg={emergency ? "green" : "#d10000"} c={"white"} fz={"md"} fw={600}>{emergency ? 'ON' : 'OFF'}</Card>
+                                    </Flex>
+                                    {/* <Space h={15} /> */}
+                                </ScrollArea>
                             </Card>
                         </Flex>
                     </Grid.Col>
 
                     <Grid.Col span={6}>
                         <Flex justify={"center"} align={"center"} direction={"column"}>
-                            <h1 class="title">Outputs</h1>
+                            <h2 class="title">Outputs</h2>
                             <Card className='output-card' w={"100%"} radius={"md"} >
                                 <Flex justify={"space-between"} align={"center"} ml={"1rem"} mr={"1rem"}>
-                                    <Text fz={"1.5rem"} fw={700}>Main Motor Forward</Text>
+                                    <Text fz={"lg"} fw={700}>Main Motor Forward</Text>
 
-                                    <Card align={"center"} w={"5rem"} radius={10} bg={mmf ? "green" : "#d10000"} c={"white"} fz={"lg"} fw={600}>{mmf ? 'ON' : 'OFF'}</Card>
+                                    <Card align={"center"} w={"5rem"} radius={10} bg={mmf ? "green" : "#d10000"} c={"white"} fz={"md"} fw={600}>{mmf ? 'ON' : 'OFF'}</Card>
                                 </Flex>
                                 <Space h={15} />
                                 <Divider variant='dashed' />
                                 <Space h={15} />
 
                                 <Flex justify={"space-between"} align={"center"} ml={"1rem"} mr={"1rem"}>
-                                    <Text fz={"1.5rem"} fw={700}>Main Motor Reverse</Text>
+                                    <Text fz={"lg"} fw={700}>Main Motor Reverse</Text>
 
-                                    <Card align={"center"} w={"5rem"} radius={10} bg={mmr ? "green" : "#d10000"} c={"white"} fz={"lg"} fw={600}>{mmr ? 'ON' : 'OFF'}</Card>
+                                    <Card align={"center"} w={"5rem"} radius={10} bg={mmr ? "green" : "#d10000"} c={"white"} fz={"md"} fw={600}>{mmr ? 'ON' : 'OFF'}</Card>
                                 </Flex>
                                 <Space h={15} />
                                 <Divider variant='dashed' />
                                 <Space h={15} />
 
                                 <Flex justify={"space-between"} align={"center"} ml={"1rem"} mr={"1rem"}>
-                                    <Text fz={"1.5rem"} fw={700}>Blower Motor</Text>
+                                    <Text fz={"lg"} fw={700}>Blower Motor</Text>
 
-                                    <Card align={"center"} w={"5rem"} radius={10} bg={blowerMotor ? "green" : "#d10000"} c={"white"} fz={"lg"} fw={600}>{blowerMotor ? 'ON' : 'OFF'}</Card>
+                                    <Card align={"center"} w={"5rem"} radius={10} bg={blowerMotor ? "green" : "#d10000"} c={"white"} fz={"md"} fw={600}>{blowerMotor ? 'ON' : 'OFF'}</Card>
                                 </Flex>
                                 <Space h={15} />
                                 <Divider variant='dashed' />
                                 <Space h={15} />
 
                                 <Flex justify={"space-between"} align={"center"} ml={"1rem"} mr={"1rem"}>
-                                    <Text fz={"1.5rem"} fw={700}>Heater</Text>
+                                    <Text fz={"lg"} fw={700}>Heater</Text>
 
-                                    <Card align={"center"} w={"5rem"} radius={10} bg={heater ? "green" : "#d10000"} c={"white"} fz={"lg"} fw={600}>{heater ? 'ON' : 'OFF'}</Card>
+                                    <Card align={"center"} w={"5rem"} radius={10} bg={heater ? "green" : "#d10000"} c={"white"} fz={"md"} fw={600}>{heater ? 'ON' : 'OFF'}</Card>
                                 </Flex>
                                 <Space h={15} />
                                 <Divider variant='dashed' />
                                 {/* <Space h={15} />
 
                                 <Flex justify={"space-between"} align={"center"} ml={"1rem"} mr={"1rem"}>
-                                    <Text fz={"1.5rem"} fw={700}>emergency Switch</Text>
+                                    <Text fz={"lg"} fw={700}>emergency Switch</Text>
 
-                                    <Card radius={10} bg={mmt ? "green" : "#d10000"} c={"white"} fz={"lg"} fw={600}>{mmt ? 'ON' : 'OFF'}</Card>
+                                    <Card radius={10} bg={mmt ? "green" : "#d10000"} c={"white"} fz={"md"} fw={600}>{mmt ? 'ON' : 'OFF'}</Card>
                                 </Flex> */}
                                 {/* <Space h={15} /> */}
 

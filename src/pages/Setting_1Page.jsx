@@ -29,7 +29,7 @@ const Setting_1Page = () => {
                 footer={
                     < Footer  >
                         <Flex className="stng1footer" align={"center"}>
-                            <Button h={"85%"} ml={"1%"} onClick={() => navigate("/")}>
+                            <Button h={"80%"} w={"6rem"} ml={"1%"} onClick={() => navigate("/")}>
                                 <Flex direction={"column"} justify={"center"} align={"center"}>
                                     <AiFillHome size={"2rem"} />
                                     <Text fz={"lg"}>HOME</Text>
