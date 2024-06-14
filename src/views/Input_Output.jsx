@@ -1,5 +1,5 @@
 import { Button, Card, Center, Container, Divider, Flex, Grid, ScrollArea, Space, Text } from '@mantine/core'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { wsUrl } from './config'
 
 const Input_Output = () => {
@@ -13,30 +13,62 @@ const Input_Output = () => {
     const [blowerMotor, setblowerMotor] = useState(false)
     const [heater, setheater] = useState(false)
 
-    const socket = new WebSocket(`${wsUrl}?screen=InputOutput`)
+    useEffect(() => {
+        const newSocket = new WebSocket(`${wsUrl}?screen=InputOutput`); // Replace with your URL
 
-    socket.onopen = (event) => {
-        console.log("websocket established", event);
+        newSocket.onopen = () => {
+            console.log('WebSocket connection opened');
+            // setSocket(newSocket);
+        };
 
-        // socket.send(JSON.stringify(obj2));
+        newSocket.onmessage = (event) => {
+            const res = JSON.parse(event.data)
+            console.log(res)
 
-    }
-    socket.onmessage = (event) => {
-        const res = JSON.parse(event.data)
-        console.log(res)
+            mainFunction(res)
+        }
 
-        mainFunction(res)
-        // console.log('Message from server:', event);
-    }
-    socket.onclose = () => {
+        newSocket.onclose = () => {
+            // newSocket.close()
+            console.log('Websocket connection closed');
+        }
 
-        console.log('websocket connection closed');
-        // setTimeout(websocket, reconnectDelay);
+        newSocket.onerror = (error) => {
+            console.log("websocket connection error", error)
+        }
 
-    }
-    socket.onerror = (error) => {
-        console.log("websocket connection error", error)
-    }
+        return () => {
+            if (newSocket) {
+                newSocket.close();
+                console.log('WebSocket connection closed');
+            }
+        };
+    }, []);
+
+    // const socket = new WebSocket(`${wsUrl}?screen=InputOutput`)
+
+    // socket.onopen = (event) => {
+    //     console.log("websocket established", event);
+
+    //     // socket.send(JSON.stringify(obj2));
+
+    // }
+    // socket.onmessage = (event) => {
+    //     const res = JSON.parse(event.data)
+    //     console.log(res)
+
+    //     mainFunction(res)
+    //     // console.log('Message from server:', event);
+    // }
+    // socket.onclose = () => {
+
+    //     console.log('websocket connection closed');
+    //     // setTimeout(websocket, reconnectDelay);
+
+    // }
+    // socket.onerror = (error) => {
+    //     console.log("websocket connection error", error)
+    // }
 
     const mainFunction = (data) => {
         console.log(data)
@@ -245,8 +277,8 @@ const Input_Output = () => {
                     <Grid.Col span={6}>
                         <Flex justify={"center"} align={"center"} direction={"column"}>
                             <h2 class="title">Inputs</h2>
-                            <Card className='input-card' w={"100%"} h={"auto"} radius={"md"} >
-                                <ScrollArea h={"96%"} type='always' scrollbarSize={6} offsetScrollbars>
+                            <Card className='input-card' w={"100%"} radius={"md"} >
+                                <ScrollArea h={"101%"} type='always' scrollbarSize={6} offsetScrollbars>
                                     <Flex justify={"space-between"} align={"center"} ml={"1rem"} mr={"1rem"}>
                                         <Text fz={"lg"} fw={700}>Main Motor Trip</Text>
 
@@ -331,7 +363,7 @@ const Input_Output = () => {
                                     <Card align={"center"} w={"5rem"} radius={10} bg={heater ? "green" : "#d10000"} c={"white"} fz={"md"} fw={600}>{heater ? 'ON' : 'OFF'}</Card>
                                 </Flex>
                                 <Space h={15} />
-                                <Divider variant='dashed' />
+                                {/* <Divider variant='dashed' /> */}
                                 {/* <Space h={15} />
 
                                 <Flex justify={"space-between"} align={"center"} ml={"1rem"} mr={"1rem"}>

@@ -135,9 +135,9 @@ const Operations = () => {
                     position: 'absolute',
                     zIndex: 10,
                 }}>
-                    {status ? (<Button onClick={CycleStart} size='5rem' h={"22rem"} w={"22rem"} radius={"100%"}
+                    {status ? (<Button onClick={CycleStart} size='4rem' h={"22rem"} w={"22rem"} radius={"100%"}
                         style={{ backgroundColor: "green", boxShadow: "0px 0px 25px rgba(0, 0, 0, 0.5)" }}>START</Button>) :
-                        (<Button onClick={CycleStop} size='5rem' h={"22rem"} w={"22rem"} radius={"100%"}
+                        (<Button onClick={CycleStop} size='4rem' h={"22rem"} w={"22rem"} radius={"100%"}
                             style={{ backgroundColor: "#d10000", boxShadow: "0px 0px 25px rgba(0, 0, 0, 0.5)" }}>STOP</Button>
                         )}
                 </div>

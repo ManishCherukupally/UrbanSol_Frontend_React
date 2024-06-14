@@ -1,11 +1,11 @@
 import { Button, Card, Container, Flex, Grid, Group, NumberInput, ScrollArea, SimpleGrid, Space, Text, TextInput } from '@mantine/core'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../style.css'
 import { useNavigate } from 'react-router-dom'
 import { wsUrl } from './config'
 const Setting_1 = () => {
     // let url = `ws://192.168.29.144:8765?screen=Settings`
-    const socket = new WebSocket(`${wsUrl}?screen=Settings`)
+    // const socket = new WebSocket(`${wsUrl}?screen=Settings`)
 
     const navigate = useNavigate()
 
@@ -58,29 +58,61 @@ const Setting_1 = () => {
 
 
     // const socket = new WebSocket(url)
+    useEffect(() => {
+        const newSocket = new WebSocket(`${wsUrl}?screen=Settings`); // Replace with your URL
 
-    socket.onopen = (event) => {
-        console.log("websocket established", event);
+        newSocket.onopen = () => {
+            console.log('WebSocket connection opened');
+            // setSocket(newSocket);
 
-        // socket.send(JSON.stringify(obj2));
 
-    }
-    socket.onmessage = (event) => {
-        const res = JSON.parse(event.data)
-        console.log(res)
+        };
 
-        mainFunction(res)
-        // console.log('Message from server:', event);
-    }
-    socket.onclose = () => {
+        newSocket.onmessage = (event) => {
+            const res = JSON.parse(event.data)
+            console.log(res)
 
-        console.log('websocket connection closed');
-        // setTimeout(websocket, reconnectDelay);
+            mainFunction(res)
+        }
 
-    }
-    socket.onerror = (error) => {
-        console.log("websocket connection error", error)
-    }
+        newSocket.onclose = () => {
+            // newSocket.close()
+            console.log('Websocket connection closed');
+        }
+
+        newSocket.onerror = (error) => {
+            console.log("websocket connection error", error)
+        }
+
+        return () => {
+            if (newSocket) {
+                newSocket.close();
+                console.log('WebSocket connection closed');
+            }
+        };
+    }, []);
+    // socket.onopen = (event) => {
+    //     console.log("websocket established", event);
+
+    //     // socket.send(JSON.stringify(obj2));
+
+    // }
+    // socket.onmessage = (event) => {
+    //     const res = JSON.parse(event.data)
+    //     console.log(res)
+
+    //     mainFunction(res)
+    //     // console.log('Message from server:', event);
+    // }
+    // socket.onclose = () => {
+
+    //     console.log('websocket connection closed');
+    //     // setTimeout(websocket, reconnectDelay);
+
+    // }
+    // socket.onerror = (error) => {
+    //     console.log("websocket connection error", error)
+    // }
 
     const mainFunction = (data) => {
         // setTcTime(data.total_cycle_time)
@@ -136,7 +168,7 @@ const Setting_1 = () => {
     //     setTcTime(event.currentTarget.value);
     // };
     return (
-        <div style={{ height: "120vh" }} >
+        <div style={{ height: "110vh" }} >
             {/* <Flex direction={"column"} justify={"space-between"}> */}
             {/* <div class="header">
                     <h2 style={{ paddingLeft: "2%" }}>DD/MM/YYYY</h2>
@@ -161,13 +193,13 @@ const Setting_1 = () => {
                 <Grid.Col span={2}>
 
                 </Grid.Col>
-                <Grid.Col span={8} >
+                <Grid.Col span={9} >
 
-                    <SimpleGrid cols={3} spacing={"4rem"} verticalSpacing={"2.5rem"} justify="center">
-                        <h2></h2>
+                    <SimpleGrid cols={3} spacing={"4rem"} verticalSpacing={"2.5rem"} style={{ display: "grid", alignItems: "center" }}>
+                        <div></div>
 
                         <Text fz={"xl"} fw={700}>Set Value</Text>
-                        <h2></h2>
+                        <div></div>
 
                         <Text fz={"xl"} fw={700} style={{ display: "flex", alignItems: "center" }}>Total Cycle Time</Text>
                         {/* <Text id="presenttcTime" fz={"xl"} fw={600}>12 : 12 Hrs</Text> */}
@@ -358,12 +390,15 @@ const Setting_1 = () => {
                     </SimpleGrid>
 
                 </Grid.Col>
-                <Grid.Col span={2} style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                <Grid.Col span={1} style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                    <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                        <Button h={"3rem"} fz={"lg"} fw={600} mr={"1%"} style={{ backgroundColor: 'rgb(233, 153, 3)' }}
+                            onClick={() => navigate('/setting2')}>NEXT</Button>
+                    </div>
 
-                    <Button h={"3rem"} fullWidth fz={"lg"} fw={600} mr={"1%"} style={{ backgroundColor: 'rgb(233, 153, 3)' }}
-                        onClick={() => navigate('/setting2')}>NEXT</Button>
-                    <Button id="saveButton" onClick={handleSaveButton} fz={"lg"} h={"3rem"} fullWidth style={{ backgroundColor: "#d10000" }}>Save</Button>
-
+                    <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                        <Button id="saveButton" onClick={handleSaveButton} fz={"lg"} h={"3rem"} style={{ backgroundColor: "#d10000" }}>SAVE</Button>
+                    </div>
                 </Grid.Col>
             </Grid>
             {/* </Container> */}

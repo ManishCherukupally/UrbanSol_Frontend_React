@@ -19,57 +19,87 @@ const Manual = () => {
 
     // let url = `ws://192.168.29.144:8765?screen=Manual`
 
+    // useEffect(() => {
+    //     const socket = new WebSocket(`${wsUrl}?screen=Manual`)
+
+    //     // console.log(previousPopupStatus)
+
+    //     // useEffect(() => {
+    //     //     if (previousPopupStatus) {
+    //     //         setpopupStatus(true);
+    //     //     }
+    //     //     else if (previousPopupStatus === false) {
+    //     //         setpopupStatus(false)
+    //     //     }
+
+    //     // }, [previousPopupStatus])
+
+    //     socket.onmessage = (event) => {
+    //         const res = JSON.parse(event.data)
+    //         console.log(res)
+    //         // setpopupMesaage(res.message)
+    //         // const currentPopupStatus = res.Pop_up;
+
+    //         // if (previousPopupStatus !== currentPopupStatus) {
+    //         //     // Update pop-up status only if it has changed
+    //         //     setpopupMesaage(res.message);
+    //         //     setpopupStatus(currentPopupStatus);
+    //         //     setpreviousPopupStatus(currentPopupStatus)
+    //         // }
+
+    //         mainFunction(res)
+    //     }
+    //     socket.onclose = () => {
+    //         socket.close()
+    //         console.log('websocket connection closed');
+    //         // setTimeout(websocket, reconnectDelay);
+
+    //     }
+    //     socket.onerror = (error) => {
+    //         console.log("websocket connection error", error)
+    //     }
+    //     return () => {
+    //         if (socket) {
+    //             console.log('WebSocket connection closed: close event');
+    //             socket.close();
+    //         }
+    //     };
+    // })
+    const [socket, setSocket] = useState(null);
+
     useEffect(() => {
-        const socket = new WebSocket(`${wsUrl}?screen=Manual`)
+        const newSocket = new WebSocket(`${wsUrl}?screen=Manual`); // Replace with your URL
 
-        // console.log(previousPopupStatus)
+        newSocket.onopen = () => {
+            console.log('WebSocket connection opened');
+            setSocket(newSocket);
 
-        // useEffect(() => {
-        //     if (previousPopupStatus) {
-        //         setpopupStatus(true);
-        //     }
-        //     else if (previousPopupStatus === false) {
-        //         setpopupStatus(false)
-        //     }
 
-        // }, [previousPopupStatus])
+        };
 
-        socket.onmessage = (event) => {
+        newSocket.onmessage = (event) => {
             const res = JSON.parse(event.data)
             console.log(res)
-            // setpopupMesaage(res.message)
-            // const currentPopupStatus = res.Pop_up;
-
-            // if (previousPopupStatus !== currentPopupStatus) {
-            //     // Update pop-up status only if it has changed
-            //     setpopupMesaage(res.message);
-            //     setpopupStatus(currentPopupStatus);
-            //     setpreviousPopupStatus(currentPopupStatus)
-            // }
 
             mainFunction(res)
         }
-        socket.onclose = () => {
-            socket.close()
-            console.log('websocket connection closed');
-            // setTimeout(websocket, reconnectDelay);
 
+        newSocket.onclose = () => {
+            // newSocket.close()
+            console.log('Websocket connection closed');
         }
-        socket.onerror = (error) => {
+
+        newSocket.onerror = (error) => {
             console.log("websocket connection error", error)
         }
+
         return () => {
-            if (socket) {
-                console.log('WebSocket connection closed: close event');
-                socket.close();
+            if (newSocket) {
+                newSocket.close();
+                console.log('WebSocket connection closed');
             }
         };
-    })
-
-
-    // window.addEventListener("unload", () => {
-    //     socket.close();
-    // });
+    }, []);
 
 
     const mainFunction = (data) => {
@@ -112,6 +142,7 @@ const Manual = () => {
                 // mmfstatusbtn.style.background = "#d10000"
                 setmmfStatus(false)
             }
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
             // let mmrstatusbtn = document.getElementById('reverse_btn')
             if (data.MMR === 'on') {
@@ -147,11 +178,7 @@ const Manual = () => {
                 // mmrstatusbtn.style.background = "#d10000"
                 setmmrStatus(false)
             }
-
-
-            let blowerStatus = document.getElementById('blowerstatus')
-            let blowerstatusbtn = document.getElementById('blower_btn')
-
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////
             if (data.Blower_Motor === true) {
                 // blowerStatus.textContent = 'ON'
                 // blowerstatusbtn.style.background = "green"
@@ -183,10 +210,9 @@ const Manual = () => {
                 // blowerstatusbtn.style.background = "#d10000"
                 setblowerStatus(false)
             }
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-            let heater_data = document.getElementById('heater_status')
-            let heaterstatusbtn = document.getElementById('heaterbt')
             if (data.Heater === true) {
                 // heater_data.textContent = 'ON'
                 // heaterstatusbtn.style.background = "green"
@@ -220,9 +246,9 @@ const Manual = () => {
                 setheaterStatus(false)
             }
 
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            let acr_data = document.getElementById('acrSwitchStatus')
-            let acrstatusbtn = document.getElementById('acrSwitchbtn')
+
             if (data.Acr === true) {
                 // acr_data.textContent = 'ON'
                 // acrstatusbtn.style.background = "green"

@@ -182,10 +182,11 @@
 
 import React, { useEffect, useState } from 'react'
 import { wsUrl } from './config';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@mantine/core';
 
 const Dummy = () => {
+    const navigate = useNavigate()
     const [socket, setSocket] = useState(null);
 
     useEffect(() => {
@@ -202,8 +203,8 @@ const Dummy = () => {
         }
 
         return () => {
-            if (socket) {
-                socket.close();
+            if (newSocket) {
+                newSocket.close();
                 console.log('WebSocket connection closed');
             }
         };
@@ -214,10 +215,7 @@ const Dummy = () => {
             {/* <Link to="/">
                 click here
             </Link> */}
-            <Button onClick={() => {
-                const newSocket = new WebSocket(`${wsUrl}?screen=Manual`); // Replace with your URL
-                newSocket.close()
-            }}>Click here</Button>
+            <Button onClick={() => navigate('/')}>Click here</Button>
         </div>
     )
 }

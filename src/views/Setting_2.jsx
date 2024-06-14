@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Card, Container, Flex, Grid, Group, NumberInput, SimpleGrid, Space, Text, TextInput } from '@mantine/core'
 import { useNavigate } from 'react-router-dom'
 import { wsUrl } from './config'
@@ -34,30 +34,39 @@ const Setting_2 = () => {
     const [compostOutseconds, setcompostOutSeconds] = useState(0);
 
 
-    const socket = new WebSocket(`${wsUrl}?screen=Settings`)
+    useEffect(() => {
+        const newSocket = new WebSocket(`${wsUrl}?screen=Settings`); // Replace with your URL
 
-    socket.onopen = (event) => {
-        console.log("websocket established", event);
+        newSocket.onopen = () => {
+            console.log('WebSocket connection opened');
+            // setSocket(newSocket);
 
-        // socket.send(JSON.stringify(obj2));
 
-    }
-    socket.onmessage = (event) => {
-        const res = JSON.parse(event.data)
-        console.log(res)
+        };
 
-        mainFunction(res)
-        // console.log('Message from server:', event);
-    }
-    socket.onclose = () => {
+        newSocket.onmessage = (event) => {
+            const res = JSON.parse(event.data)
+            console.log(res)
 
-        console.log('websocket connection closed');
-        // setTimeout(websocket, reconnectDelay);
+            mainFunction(res)
+        }
 
-    }
-    socket.onerror = (error) => {
-        console.log("websocket connection error", error)
-    }
+        newSocket.onclose = () => {
+            // newSocket.close()
+            console.log('Websocket connection closed');
+        }
+
+        newSocket.onerror = (error) => {
+            console.log("websocket connection error", error)
+        }
+
+        return () => {
+            if (newSocket) {
+                newSocket.close();
+                console.log('WebSocket connection closed');
+            }
+        };
+    }, []);
 
     const mainFunction = (data) => {
         // setTcTime(data.total_cycle_time)
@@ -103,7 +112,7 @@ const Setting_2 = () => {
 
     }
     return (
-        <div style={{ height: "115vh" }} >
+        <div style={{ height: "100vh" }} >
             {/* <Flex direction={"column"} justify={"space-between"}> */}
             {/* <div class="header">
                     <h2 style={{ paddingLeft: "2%" }}>DD/MM/YYYY</h2>
@@ -126,17 +135,19 @@ const Setting_2 = () => {
                     </Card> */}
             <Grid >
                 <Grid.Col span={2}>
-                    <Button fullWidth h={"3rem"} fz={"xl"} fw={600} style={{ backgroundColor: 'rgb(233, 153, 3)' }} onClick={() => navigate('/setting1')}>BACK</Button>
+                    <Button h={"3rem"} fz={"xl"} fw={600} style={{ backgroundColor: 'rgb(233, 153, 3)' }} onClick={() => navigate('/setting1')}>BACK</Button>
                 </Grid.Col>
-                <Grid.Col span={8}>
+                <Grid.Col span={9}>
                     {/* <SimpleGrid cols={4}>
 
                                 </SimpleGrid> */}
-                    <SimpleGrid cols={3} spacing={"4rem"} verticalSpacing={"2.5rem"} >
-                        <h2></h2>
+                    <SimpleGrid cols={3} spacing={"4rem"} verticalSpacing={"2.5rem"} style={{ display: "grid", alignItems: "center" }} >
+
+                        <div></div>
+                        {/* <div></div> */}
                         {/* <Text fz={"xl"} fw={700}>Present Time</Text> */}
                         <Text fz={"xl"} fw={700}>Set Value</Text>
-                        <h2></h2>
+                        <div></div>
 
                         <Text fz={"xl"} fw={700}>Blower On Time</Text>
                         {/* <Text id="presenttcTime" fz={"xl"} fw={600}>123 Sec</Text> */}
@@ -154,7 +165,7 @@ const Setting_2 = () => {
 
 
 
-                        <Text fz={"xl"} fw={700} style={{ display: "flex", alignItems: "center" }}>Compost Out Time</Text>
+                        <Text fz={"xl"} fw={700}  >Compost Out Time</Text>
                         {/* <Text id="presentfwdTime" fz={"xl"} fw={600}>12 : 12 Hrs</Text> */}
                         {compostOutEditing ?
                             <Flex gap="0.5rem" align="center">
@@ -186,19 +197,19 @@ const Setting_2 = () => {
                             :
                             <Group>
                                 <Flex align={"center"} gap={10}>
-                                    <Text fz={"xl"} fw={600}>{getCompostOutHours}</Text>
-                                    <Text fz={"xl"} fw={600}>H </Text>
-                                    <Text fz={"xl"} fw={600}>:</Text>
+                                    <Text fz={"xl"} fw={600} >{getCompostOutHours}</Text>
+                                    <Text fz={"xl"} fw={600} >H </Text>
+                                    <Text fz={"xl"} fw={600} >:</Text>
                                 </Flex>
                                 <Flex align={"center"} gap={10}>
-                                    <Text fz={"xl"} fw={600}>{getCompostOutMinutes}</Text>
-                                    <Text fz={"xl"} fw={600}>M </Text>
-                                    <Text fz={"xl"} fw={600}>:</Text>
+                                    <Text fz={"xl"} fw={600} >{getCompostOutMinutes}</Text>
+                                    <Text fz={"xl"} fw={600} >M </Text>
+                                    <Text fz={"xl"} fw={600} >:</Text>
                                 </Flex>
                                 <Flex align={"center"} gap={3}>
-                                    <Text fz={"xl"} fw={600}>{getCompostOutSeconds}</Text>
+                                    <Text fz={"xl"} fw={600} >{getCompostOutSeconds}</Text>
 
-                                    <Text fz={"xl"} fw={600}> S</Text>
+                                    <Text fz={"xl"} fw={600} > S</Text>
                                 </Flex>
                             </Group>
                         }
@@ -342,12 +353,15 @@ const Setting_2 = () => {
 
                     </SimpleGrid>
                 </Grid.Col>
-                <Grid.Col span={2} style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                <Grid.Col span={1} style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                    <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                        <Button h={"3rem"} fz={"lg"} fw={600} mr={"1%"} style={{ backgroundColor: 'rgb(233, 153, 3)' }}
+                            onClick={() => navigate('/setting3')}>NEXT</Button>
+                    </div>
 
-                    <Button h={"3rem"} fz={"lg"} fw={600} mr={"1%"} style={{ backgroundColor: 'rgb(233, 153, 3)' }}
-                        onClick={() => navigate('/setting3')}>NEXT</Button>
-                    <Button id="saveButton" onClick={handleSaveButton} fz={"lg"} h={"3rem"} style={{ backgroundColor: "#d10000" }}>Save</Button>
-
+                    <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                        <Button id="saveButton" onClick={handleSaveButton} fz={"lg"} h={"3rem"} style={{ backgroundColor: "#d10000" }}>SAVE</Button>
+                    </div>
                 </Grid.Col>
             </Grid>
             {/* </Container>
