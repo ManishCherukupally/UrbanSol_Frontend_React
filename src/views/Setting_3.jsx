@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Button, Card, Container, Flex, Grid, Group, NumberInput, SimpleGrid, Space, Text, TextInput } from '@mantine/core'
 import { useNavigate } from 'react-router-dom'
 import { wsUrl } from './config';
+import { MdArrowLeft } from 'react-icons/md';
+import OverlayModal from './OverlayModal';
 const Setting_3 = () => {
     // let url = `ws://192.168.29.144:8765?screen=Settings`
 
@@ -35,33 +37,57 @@ const Setting_3 = () => {
     const [postcurrentFreqTime, setPostcurrentFreqTime] = useState(0)
 
     // const socket = new WebSocket(`${wsUrl}?screen=Settings`)
+    const [popupStatus, setpopupStatus] = useState(null)
+    const [popupMessage, setpopupMessage] = useState("")
+    const [popupTime, setpopupTime] = useState("")
+    const [websocketError, setwebsocketError] = useState(false)
 
     useEffect(() => {
         const newSocket = new WebSocket(`${wsUrl}?screen=Settings`); // Replace with your URL
-
-        newSocket.onopen = () => {
-            console.log('WebSocket connection opened');
-            // setSocket(newSocket);
+        const websocket = () => {
 
 
-        };
+            newSocket.onopen = () => {
+                setwebsocketError(false)
+                console.log('WebSocket connection opened');
 
-        newSocket.onmessage = (event) => {
-            const res = JSON.parse(event.data)
-            console.log(res)
 
-            mainFunction(res)
+            };
+
+            newSocket.onmessage = (event) => {
+                const res = JSON.parse(event.data)
+                console.log(res)
+
+                // if (res.Pop_up && res.message) {
+                //     setpopupStatus(res.Pop_up)
+                //     setpopupMessage(res.message)
+                // }
+                // else {
+                //     mainFunction(res)
+                // }
+                mainFunction(res)
+                setpopupStatus(res.Pop_up)
+                setpopupMessage(res.message)
+                setpopupTime(res.Time_stamp)
+
+            }
+
+            newSocket.onclose = () => {
+                // setwebsocketError(true)
+                // newSocket.close()
+                setTimeout(websocket, 1000);
+                console.log('Websocket connection closed');
+            }
+
+            newSocket.onerror = (error) => {
+                setwebsocketError(true)
+                setTimeout(websocket, 1000);
+                console.log("websocket connection error", error)
+            }
+
+
         }
-
-        newSocket.onclose = () => {
-            // newSocket.close()
-            console.log('Websocket connection closed');
-        }
-
-        newSocket.onerror = (error) => {
-            console.log("websocket connection error", error)
-        }
-
+        websocket()
         return () => {
             if (newSocket) {
                 newSocket.close();
@@ -108,6 +134,9 @@ const Setting_3 = () => {
     }
     return (
         <div style={{ height: "115vh" }}>
+            {websocketError ? (<OverlayModal status={true} message={"Websocket Connection Error"} time={'00:00:00'} />) : (
+                <OverlayModal status={popupStatus} message={popupMessage} time={popupTime} />
+            )}
             {/* <Flex direction={"column"} justify={"space-between"}> */}
             {/* <div class="header">
                     <h2 style={{ paddingLeft: "2%" }}>DD/MM/YYYY</h2>
@@ -130,7 +159,7 @@ const Setting_3 = () => {
                     </Card> */}
             <Grid >
                 <Grid.Col span={2}>
-                    <Button h={"3rem"} fz={"xl"} fw={600} style={{ backgroundColor: 'rgb(233, 153, 3)' }} onClick={() => navigate('/setting2')}>BACK</Button>
+                    <Button radius={10} h={"3rem"} fz={"xl"} fw={600} style={{ backgroundColor: 'rgb(233, 153, 3)' }} onClick={() => navigate('/setting2')} pl={9}><MdArrowLeft size={30} />BACK</Button>
                 </Grid.Col>
                 <Grid.Col span={9}>
 
@@ -232,7 +261,7 @@ const Setting_3 = () => {
                     </div> */}
 
                     <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                        <Button id="saveButton" onClick={handleSaveButton} fz={"lg"} h={"3rem"} style={{ backgroundColor: "#d10000" }}>SAVE</Button>
+                        <Button radius={10} id="saveButton" onClick={handleSaveButton} fz={"lg"} h={"3rem"} style={{ backgroundColor: "#d10000" }}>SAVE</Button>
                     </div>
                 </Grid.Col>
             </Grid>

@@ -3,6 +3,7 @@ import { useDisclosure } from '@mantine/hooks';
 import React, { useState, useRef, useEffect } from 'react';
 import { wsUrl } from './config';
 import { useNavigate } from 'react-router-dom';
+import OverlayModal from './OverlayModal';
 
 const Operations = () => {
     const navigate = useNavigate()
@@ -10,15 +11,72 @@ const Operations = () => {
     // const [status, { toggle }] = useDisclosure(true);
     const [status, setStatus] = useState(true)
 
-    const socketRef = useRef(null);  // Store WebSocket reference
+    const [popupStatus, setpopupStatus] = useState(null)
+    const [popupMessage, setpopupMessage] = useState("")
+    const [popupTime, setpopupTime] = useState("")
+    const [websocketError, setwebsocketError] = useState(false)
 
-    const sendMessage = (messageObj) => {
-        if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
-            socketRef.current.send(JSON.stringify(messageObj));
-        } else {
-            console.error('WebSocket connection not ready to send messages.');
+
+    useEffect(() => {
+        const socket = new WebSocket(`${wsUrl}?screen=Operations`)
+        const websocket = () => {
+            // const socket = new WebSocket(`${wsUrl}?screen=Operations`)
+
+            // Assign socket to reference
+
+            socket.onopen = (event) => {
+                setwebsocketError(false)
+                console.log("websocket established", event);
+
+            }
+            socket.onmessage = (event) => {
+                const res = JSON.parse(event.data)
+                console.log(res)
+                if (res.Cycle_status === 'On') {
+                    setStatus(false)
+                }
+                else if (res.Cycle_status === 'Off') {
+                    setStatus(true)
+                }
+                setpopupStatus(res.Pop_up)
+                setpopupMessage(res.message)
+                setpopupTime(res.Time_stamp)
+            }
+
+            socket.onclose = () => {
+                // setwebsocketError(true)
+                // socket.close()
+                setTimeout(websocket, 1000);
+                console.log('Websocket connection closed');
+            }
+
+            socket.onerror = (error) => {
+                setwebsocketError(true)
+                setTimeout(websocket, 1000);
+                console.log("websocket connection error", error)
+            }
+
+
+
+
         }
-    };
+        // Create WebSocket connection on component mount
+        websocket()
+        return () => {
+            if (socket) {
+                socket.close();
+                console.log('WebSocket connection closed');
+            }
+        };
+
+        // Handle errors and cleanup on component unmount
+        // return () => {
+        //     if (socket) {
+        //         socket.close();
+        //     }
+        // };
+    }, []);  // Empty dependency array to run only once
+
 
     const CycleStart = () => {
 
@@ -82,38 +140,13 @@ const Operations = () => {
         // sendMessage(messageObj);
     };
 
-    useEffect(() => {
-        // Create WebSocket connection on component mount
-        const socket = new WebSocket(`${wsUrl}?screen=Operations`)
 
-        socketRef.current = socket;  // Assign socket to reference
-
-        socket.onopen = (event) => {
-            console.log("websocket established", event);
-
-        }
-        socket.onmessage = (event) => {
-            const res = JSON.parse(event.data)
-            console.log(res)
-            if (res.Cycle_status === 'On') {
-                setStatus(false)
-            }
-            else if (res.Cycle_status === 'Off') {
-                setStatus(true)
-            }
-        }
-
-
-        // Handle errors and cleanup on component unmount
-        // return () => {
-        //     if (socket) {
-        //         socket.close();
-        //     }
-        // };
-    }, []);  // Empty dependency array to run only once
 
     return (
         <div style={{ height: "auto" }} >
+            {websocketError ? (<OverlayModal status={true} message={"Websocket Connection Error"} time={'00:00:00'} />) : (
+                <OverlayModal status={popupStatus} message={popupMessage} time={popupTime} />
+            )}
             {/* <Flex justify={"center"} align={"center"} gap={"5rem"} m={"2rem"}>
                 <Button onClick={CycleStart}>Cycle Start</Button>
                 <Flex direction={"column"} justify={"center"} gap={"1rem"}>

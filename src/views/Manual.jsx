@@ -13,10 +13,10 @@ const Manual = () => {
     const [heaterStatus, setheaterStatus] = useState(false)
     const [acrStatus, setacrStatus] = useState(false)
 
-    const [popupStatus, setpopupStatus] = useState(true)
-    const [popupMessage, setpopupMesaage] = useState("")
-    const [previousPopupStatus, setpreviousPopupStatus] = useState(false)
-
+    const [popupStatus, setpopupStatus] = useState(null)
+    const [popupMessage, setpopupMessage] = useState("")
+    const [popupTime, setpopupTime] = useState("")
+    const [websocketError, setwebsocketError] = useState(false)
     // let url = `ws://192.168.29.144:8765?screen=Manual`
 
     // useEffect(() => {
@@ -66,40 +66,63 @@ const Manual = () => {
     //     };
     // })
     const [socket, setSocket] = useState(null);
+    const newSocket = `${wsUrl}?screen=Manual`;
+
 
     useEffect(() => {
-        const newSocket = new WebSocket(`${wsUrl}?screen=Manual`); // Replace with your URL
 
-        newSocket.onopen = () => {
-            console.log('WebSocket connection opened');
-            setSocket(newSocket);
+        const websocket = () => {
+            const newSocket = new WebSocket(`${wsUrl}?screen=Manual`); // Replace with your URL
+            // setSocket(newSocket)
+            newSocket.onopen = () => {
+                setwebsocketError(false)
+                console.log('WebSocket connection opened');
 
 
-        };
+            };
 
-        newSocket.onmessage = (event) => {
-            const res = JSON.parse(event.data)
-            console.log(res)
+            newSocket.onmessage = (event) => {
+                const res = JSON.parse(event.data)
+                console.log(res)
 
-            mainFunction(res)
+                // if (res.Pop_up && res.message) {
+                //     setpopupStatus(res.Pop_up)
+                //     setpopupMessage(res.message)
+                // }
+                // else {
+                //     mainFunction(res)
+                // }
+                mainFunction(res)
+                setpopupStatus(res.Pop_up)
+                setpopupMessage(res.message)
+                setpopupTime(res.Time_stamp)
+
+            }
+
+            newSocket.onclose = () => {
+                setwebsocketError(true)
+                // newSocket.close()
+                setTimeout(websocket(), 1000);
+                console.log('Websocket connection closed');
+            }
+
+            newSocket.onerror = (error) => {
+                setwebsocketError(true)
+                setTimeout(websocket(), 1000);
+                console.log("websocket connection error", error)
+            }
+
+
         }
-
-        newSocket.onclose = () => {
-            // newSocket.close()
-            console.log('Websocket connection closed');
-        }
-
-        newSocket.onerror = (error) => {
-            console.log("websocket connection error", error)
-        }
-
+        websocket()
         return () => {
             if (newSocket) {
                 newSocket.close();
                 console.log('WebSocket connection closed');
             }
         };
-    }, []);
+
+    }, [newSocket]);
 
 
     const mainFunction = (data) => {
@@ -416,6 +439,10 @@ const Manual = () => {
             {/* <Modal opened={popupStatus} withCloseButton={false} centered closeOnClickOutside={false}>
                 {popupMessage}
             </Modal> */}
+            {websocketError ? (<OverlayModal status={true} message={"Websocket Connection Error"} time={'00:00:00'} />) : (
+                <OverlayModal status={popupStatus} message={popupMessage} time={popupTime} />
+            )}
+
 
             {/* <div style={{ height: "auto", backgroundColor: "#f1f1f1", display: "flex", flexDirection: "column", justifyContent: "center", alignContent: "center" }} > */}
             <Flex direction={"column"} justify={"center"} >

@@ -183,7 +183,8 @@
 import React, { useEffect, useState } from 'react'
 import { wsUrl } from './config';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '@mantine/core';
+import { ActionIcon, Button, Indicator } from '@mantine/core';
+import { MdNotifications } from 'react-icons/md';
 
 const Dummy = () => {
     const navigate = useNavigate()
@@ -211,11 +212,14 @@ const Dummy = () => {
     }, []);
 
     return (
-        <div>
+        <div style={{ margin: "10rem" }}>
             {/* <Link to="/">
                 click here
             </Link> */}
-            <Button onClick={() => navigate('/')}>Click here</Button>
+            {/* <Button onClick={() => navigate('/')}>Click here</Button> */}
+            <Indicator color="red" position="top-start" size={20} processing>
+                <MdNotifications size={"4rem"} color='grey' style={{ position: "absolute", zIndex: 10 }} />
+            </Indicator>
         </div>
     )
 }

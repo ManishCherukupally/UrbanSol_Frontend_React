@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import '../style.css'
 import { useNavigate } from 'react-router-dom'
 import { wsUrl } from './config'
+import { MdArrowRight } from 'react-icons/md'
+import OverlayModal from './OverlayModal'
 const Setting_1 = () => {
     // let url = `ws://192.168.29.144:8765?screen=Settings`
     // const socket = new WebSocket(`${wsUrl}?screen=Settings`)
@@ -49,48 +51,73 @@ const Setting_1 = () => {
     const [waitCyclehours, setwaitCycleHours] = useState(0);
     const [waitCycleminutes, setwaitCycleMinutes] = useState(0);
     const [waitCycleseconds, setwaitCycleSeconds] = useState(0);
+
+    const [popupStatus, setpopupStatus] = useState(null)
+    const [popupMessage, setpopupMessage] = useState("")
+    const [popupTime, setpopupTime] = useState("")
+    const [websocketError, setwebsocketError] = useState(false)
     // const [totalTimeInSecs, setTotalTimeInSecs] = useState(0);
 
     // const convertTimeToSeconds = () => {
     //     const totalSeconds = tchours * 3600 + minutes * 60 + seconds;
     //     // setTotalTimeInSecs(totalSeconds);
     // };
-
+    const newSocket = `${wsUrl}?screen=Settings`;
 
     // const socket = new WebSocket(url)
     useEffect(() => {
         const newSocket = new WebSocket(`${wsUrl}?screen=Settings`); // Replace with your URL
-
-        newSocket.onopen = () => {
-            console.log('WebSocket connection opened');
-            // setSocket(newSocket);
+        const websocket = () => {
 
 
-        };
+            newSocket.onopen = () => {
+                setwebsocketError(false)
+                console.log('WebSocket connection opened');
 
-        newSocket.onmessage = (event) => {
-            const res = JSON.parse(event.data)
-            console.log(res)
 
-            mainFunction(res)
+            };
+
+            newSocket.onmessage = (event) => {
+                const res = JSON.parse(event.data)
+                console.log(res)
+
+                // if (res.Pop_up && res.message) {
+                //     setpopupStatus(res.Pop_up)
+                //     setpopupMessage(res.message)
+                // }
+                // else {
+                //     mainFunction(res)
+                // }
+                mainFunction(res)
+                setpopupStatus(res.Pop_up)
+                setpopupMessage(res.message)
+                setpopupTime(res.Time_stamp)
+
+            }
+
+            newSocket.onclose = () => {
+                // setwebsocketError(true)
+                // newSocket.close()
+                setTimeout(websocket, 1000);
+                console.log('Websocket connection closed');
+            }
+
+            newSocket.onerror = (error) => {
+                setwebsocketError(true)
+                setTimeout(websocket, 1000);
+                console.log("websocket connection error", error)
+            }
+
+
         }
-
-        newSocket.onclose = () => {
-            // newSocket.close()
-            console.log('Websocket connection closed');
-        }
-
-        newSocket.onerror = (error) => {
-            console.log("websocket connection error", error)
-        }
-
+        websocket()
         return () => {
             if (newSocket) {
                 newSocket.close();
                 console.log('WebSocket connection closed');
             }
         };
-    }, []);
+    }, [newSocket]);
     // socket.onopen = (event) => {
     //     console.log("websocket established", event);
 
@@ -143,8 +170,10 @@ const Setting_1 = () => {
         setwait2Editing(false)
         setwaitCycleEditing(false)
 
-        const TCtotalSeconds = tchours * 3600 + tcminutes * 60 + tcseconds;
-        const WaitCycletotalSeconds = waitCyclehours * 3600 + waitCycleminutes * 60 + waitCycleseconds;
+
+        const TCtotalSeconds = (tchours === 0 ? getTcHours : tchours) * 3600 + (tcminutes === 0 ? getTcMinutes : tcminutes) * 60 + (tcseconds === 0 ? getTcSeconds : tcseconds);
+        const WaitCycletotalSeconds = (waitCyclehours === 0 ? getwaitCycleHours : waitCyclehours) * 3600 +
+            (waitCycleminutes === 0 ? getwaitCycleMinutes : waitCycleminutes) * 60 + (waitCycleseconds === 0 ? getwaitCycleSeconds : waitCycleseconds);
         const messageObj = {
 
             total_cycle_time: TCtotalSeconds,
@@ -162,6 +191,9 @@ const Setting_1 = () => {
             socket.send(JSON.stringify(messageObj));
         }
 
+        socket.onclose = (event) => {
+            console.log("Websocket closed", event)
+        }
 
     }
     // const handleTcTimeChange = (event) => {
@@ -169,6 +201,9 @@ const Setting_1 = () => {
     // };
     return (
         <div style={{ height: "110vh" }} >
+            {websocketError ? (<OverlayModal status={true} message={"Websocket Connection Error"} time={'00:00:00'} />) : (
+                <OverlayModal status={popupStatus} message={popupMessage} time={popupTime} />
+            )}
             {/* <Flex direction={"column"} justify={"space-between"}> */}
             {/* <div class="header">
                     <h2 style={{ paddingLeft: "2%" }}>DD/MM/YYYY</h2>
@@ -392,12 +427,12 @@ const Setting_1 = () => {
                 </Grid.Col>
                 <Grid.Col span={1} style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                     <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                        <Button h={"3rem"} fz={"lg"} fw={600} mr={"1%"} style={{ backgroundColor: 'rgb(233, 153, 3)' }}
-                            onClick={() => navigate('/setting2')}>NEXT</Button>
+                        <Button radius={10} h={"3rem"} fz={"lg"} fw={600} mr={"1%"} style={{ backgroundColor: 'rgb(233, 153, 3)' }}
+                            onClick={() => navigate('/setting2')} pr={9}>NEXT <MdArrowRight size={30} /></Button>
                     </div>
 
                     <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                        <Button id="saveButton" onClick={handleSaveButton} fz={"lg"} h={"3rem"} style={{ backgroundColor: "#d10000" }}>SAVE</Button>
+                        <Button radius={10} id="saveButton" onClick={handleSaveButton} fz={"lg"} h={"3rem"} style={{ backgroundColor: "#d10000" }}>SAVE</Button>
                     </div>
                 </Grid.Col>
             </Grid>

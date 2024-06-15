@@ -1,6 +1,7 @@
 import { Button, Card, Center, Container, Divider, Flex, Grid, ScrollArea, Space, Text } from '@mantine/core'
 import React, { useEffect, useState } from 'react'
 import { wsUrl } from './config'
+import OverlayModal from './OverlayModal'
 
 const Input_Output = () => {
     const [mmt, setmmt] = useState(false)
@@ -13,37 +14,65 @@ const Input_Output = () => {
     const [blowerMotor, setblowerMotor] = useState(false)
     const [heater, setheater] = useState(false)
 
+    const [popupStatus, setpopupStatus] = useState(null)
+    const [popupMessage, setpopupMessage] = useState("")
+    const [popupTime, setpopupTime] = useState("")
+    const [websocketError, setwebsocketError] = useState(false)
+
+    const newSocket = `${wsUrl}?screen=InputOutput`;
     useEffect(() => {
         const newSocket = new WebSocket(`${wsUrl}?screen=InputOutput`); // Replace with your URL
+        const websocket = () => {
 
-        newSocket.onopen = () => {
-            console.log('WebSocket connection opened');
-            // setSocket(newSocket);
-        };
+            // const newSocket = new WebSocket(`${wsUrl}?screen=InputOutput`);
+            newSocket.onopen = () => {
+                setwebsocketError(false)
+                console.log('WebSocket connection opened');
 
-        newSocket.onmessage = (event) => {
-            const res = JSON.parse(event.data)
-            console.log(res)
 
-            mainFunction(res)
+            };
+
+            newSocket.onmessage = (event) => {
+                const res = JSON.parse(event.data)
+                console.log(res)
+
+                // if (res.Pop_up && res.message) {
+                //     setpopupStatus(res.Pop_up)
+                //     setpopupMessage(res.message)
+                // }
+                // else {
+                //     mainFunction(res)
+                // }
+                mainFunction(res)
+                setpopupStatus(res.Pop_up)
+                setpopupMessage(res.message)
+                setpopupTime(res.Time_stamp)
+
+            }
+
+            newSocket.onclose = () => {
+                setwebsocketError(true)
+                // newSocket.close()
+                setTimeout(websocket, 1000);
+                console.log('Websocket connection closed');
+            }
+
+            newSocket.onerror = (error) => {
+                setwebsocketError(true)
+                setTimeout(websocket, 1000);
+                console.log("websocket connection error", error)
+            }
+
+
         }
-
-        newSocket.onclose = () => {
-            // newSocket.close()
-            console.log('Websocket connection closed');
-        }
-
-        newSocket.onerror = (error) => {
-            console.log("websocket connection error", error)
-        }
-
+        websocket()
         return () => {
             if (newSocket) {
                 newSocket.close();
                 console.log('WebSocket connection closed');
             }
         };
-    }, []);
+    }, [newSocket]);
 
     // const socket = new WebSocket(`${wsUrl}?screen=InputOutput`)
 
@@ -273,6 +302,9 @@ const Input_Output = () => {
     return (
         <div>
             <Container size={"xl"}>
+                {websocketError ? (<OverlayModal status={true} message={"Websocket Connection Error"} time={'00:00:00'} />) : (
+                    <OverlayModal status={popupStatus} message={popupMessage} time={popupTime} />
+                )}
                 <Grid>
                     <Grid.Col span={6}>
                         <Flex justify={"center"} align={"center"} direction={"column"}>
