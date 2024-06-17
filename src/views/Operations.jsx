@@ -46,12 +46,22 @@ const Operations = () => {
             socket.onclose = () => {
                 // setwebsocketError(true)
                 // socket.close()
+
+                var date = new Date()
+                var dateArray = date.toISOString().split(".")
+                setpopupTime(dateArray[0].replace("T", " "))
+
                 setTimeout(websocket, 1000);
                 console.log('Websocket connection closed');
+                // console.log(popupTime);
             }
 
             socket.onerror = (error) => {
                 setwebsocketError(true)
+                var date = new Date()
+                var dateArray = date.toISOString().split(".")
+                setpopupTime(dateArray[0].replace("T", " "))
+
                 setTimeout(websocket, 1000);
                 console.log("websocket connection error", error)
             }
@@ -144,7 +154,7 @@ const Operations = () => {
 
     return (
         <div style={{ height: "auto" }} >
-            {websocketError ? (<OverlayModal status={true} message={"Websocket Connection Error"} time={'00:00:00'} />) : (
+            {websocketError ? (<OverlayModal status={true} message={"Websocket Connection Error"} time={popupTime} />) : (
                 <OverlayModal status={popupStatus} message={popupMessage} time={popupTime} />
             )}
             {/* <Flex justify={"center"} align={"center"} gap={"5rem"} m={"2rem"}>
