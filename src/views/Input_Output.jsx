@@ -18,61 +18,75 @@ const Input_Output = () => {
     const [popupMessage, setpopupMessage] = useState("")
     const [popupTime, setpopupTime] = useState("")
     const [websocketError, setwebsocketError] = useState(false)
+    // const [webSocket, setWebSocket] = useState()
 
-    const newSocket = `${wsUrl}?screen=InputOutput`;
-    useEffect(() => {
-        const newSocket = new WebSocket(`${wsUrl}?screen=InputOutput`); // Replace with your URL
-        const websocket = () => {
+    // const newSo = `${wsUrl}?screen=InputOutput`;
+    // useEffect(() => {
+    //     const newSocket = new WebSocket(`${wsUrl}?screen=InputOutput`); // Replace with your URL
+    //     // const websocket = (socket) => {
+    //     // const Socket = socket
+    //     // const newSocket = new WebSocket(`${wsUrl}?screen=InputOutput`);
+    //     newSocket.onopen = () => {
+    //         setwebsocketError(false)
+    //         console.log('WebSocket connection opened');
+    //     };
 
-            // const newSocket = new WebSocket(`${wsUrl}?screen=InputOutput`);
-            newSocket.onopen = () => {
-                setwebsocketError(false)
-                console.log('WebSocket connection opened');
+    //     newSocket.onmessage = (event) => {
+    //         const res = JSON.parse(event.data)
+    //         console.log(res)
+
+    //         // if (res.Pop_up && res.message) {
+    //         //     setpopupStatus(res.Pop_up)
+    //         //     setpopupMessage(res.message)
+    //         // }
+    //         // else {
+    //         //     mainFunction(res)
+    //         // }
+    //         mainFunction(res)
+    //         setpopupStatus(res.Pop_up)
+    //         setpopupMessage(res.message)
+    //         setpopupTime(res.Time_stamp)
+
+    //     }
+
+    //     newSocket.onclose = () => {
+    //         setInterval(() => {
+    //             // const sock = new WebSocket(`${wsUrl}?screen=InputOutput`);
+
+    //             newSocket.onopen = () => {
+    //                 setwebsocketError(false)
+    //                 console.log('WebSocket connection opened');
+    //             };
+    //         }, 10)
+    //         setwebsocketError(true)
+    //         // newSocket.close()
+    //         // setInterval(websocket, 1000);
+    //         console.log('Websocket connection closed');
+    //     }
+
+    //     newSocket.onerror = (error) => {
+    //         // setInterval(() => {
+    //         //     const sock = new WebSocket(`${wsUrl}?screen=InputOutput`);
+
+    //         //     sock.onopen = () => {
+    //         //         setwebsocketError(false)
+    //         //         console.log('WebSocket connection opened');
+    //         //     };
+    //         // }, 1000)
+    //         setwebsocketError(true)
+    //         // setTimeout(websocket, 1000);
+    //         console.log("websocket connection error", error)
+    //     }
 
 
-            };
-
-            newSocket.onmessage = (event) => {
-                const res = JSON.parse(event.data)
-                console.log(res)
-
-                // if (res.Pop_up && res.message) {
-                //     setpopupStatus(res.Pop_up)
-                //     setpopupMessage(res.message)
-                // }
-                // else {
-                //     mainFunction(res)
-                // }
-                mainFunction(res)
-                setpopupStatus(res.Pop_up)
-                setpopupMessage(res.message)
-                setpopupTime(res.Time_stamp)
-
-            }
-
-            newSocket.onclose = () => {
-                setwebsocketError(true)
-                // newSocket.close()
-                setTimeout(websocket, 1000);
-                console.log('Websocket connection closed');
-            }
-
-            newSocket.onerror = (error) => {
-                setwebsocketError(true)
-                setTimeout(websocket, 1000);
-                console.log("websocket connection error", error)
-            }
-
-
-        }
-        websocket()
-        return () => {
-            if (newSocket) {
-                newSocket.close();
-                console.log('WebSocket connection closed');
-            }
-        };
-    }, [newSocket]);
+    //     return () => {
+    //         console.log(newSocket);
+    //         if (newSocket) {
+    //             newSocket.close();
+    //             console.log('WebSocket connection CLOSED', newSocket);
+    //         }
+    //     };
+    // }, []);
 
     // const socket = new WebSocket(`${wsUrl}?screen=InputOutput`)
 
@@ -98,9 +112,209 @@ const Input_Output = () => {
     // socket.onerror = (error) => {
     //     console.log("websocket connection error", error)
     // }
+    // const url = `ws://192.168.29.76:8765?screen=InputOutput`;
+    // // const webSocket = new WebSocket(url)
+    // useEffect(() => {
+    //     let socket
+    //     let reconnectTimeout;
+
+    //     const connectWebSocket = () => {
+    //         socket = new WebSocket(url);
+    //         // setWebSocket(socket)
+    //         socket.onopen = (event) => {
+    //             console.log("WebSocket established", event);
+    //         };
+
+    //         socket.onmessage = (event) => {
+    //             const res = JSON.parse(event.data);
+    //             mainFunction(res);  // Assuming mainFunction is defined elsewhere
+    //         };
+
+    //         socket.onclose = () => {
+    //             console.log('WebSocket connection closed, attempting to reconnect...');
+    //             reconnect();
+    //         };
+
+    //         socket.onerror = (error) => {
+    //             console.log("WebSocket connection error", error);
+    //             reconnect();
+    //         };
+    //     };
+
+    //     const reconnect = () => {
+
+    //         if (!reconnectTimeout) {
+    //             reconnectTimeout = setTimeout(() => {
+    //                 connectWebSocket();
+    //                 reconnectTimeout = null;
+    //             }, 2000); // Try to reconnect every 5 seconds
+    //         }
+    //     };
+
+    //     const handleBeforeUnload = () => {
+    //         if (socket) {
+    //             socket.close();
+    //         }
+    //     };
+
+    //     connectWebSocket();
+    //     // window.addEventListener('beforeunload', handleBeforeUnload);
+
+
+    //     return () => {
+    //         if (socket) {
+    //             socket.close();
+    //             console.log('WebSocket connection closed');
+    //         }
+    //         if (reconnectTimeout) {
+    //             clearTimeout(reconnectTimeout);
+    //         }
+
+    //         // window.removeEventListener('beforeunload', handleBeforeUnload);
+    //     };
+    // }, [url]);
+
+
+    let reconnectTimeout
+    // useEffect(() => {
+    //     const socket = new WebSocket(`${wsUrl}?screen=Manual`)
+
+    //     // console.log(previousPopupStatus)
+
+    //     // useEffect(() => {
+    //     //     if (previousPopupStatus) {
+    //     //         setpopupStatus(true);
+    //     //     }
+    //     //     else if (previousPopupStatus === false) {
+    //     //         setpopupStatus(false)
+    //     //     }
+
+    //     // }, [previousPopupStatus])
+
+    //     socket.onmessage = (event) => {
+    //         const res = JSON.parse(event.data)
+    //         console.log(res)
+    //         // setpopupMesaage(res.message)
+    //         // const currentPopupStatus = res.Pop_up;
+
+    //         // if (previousPopupStatus !== currentPopupStatus) {
+    //         //     // Update pop-up status only if it has changed
+    //         //     setpopupMesaage(res.message);
+    //         //     setpopupStatus(currentPopupStatus);
+    //         //     setpreviousPopupStatus(currentPopupStatus)
+    //         // }
+
+    //         mainFunction(res)
+    //     }
+    //     socket.onclose = () => {
+    //         socket.close()
+    //         console.log('websocket connection closed');
+    //         // setTimeout(websocket, reconnectDelay);
+
+    //     }
+    //     socket.onerror = (error) => {
+    //         console.log("websocket connection error", error)
+    //     }
+    //     return () => {
+    //         if (socket) {
+    //             console.log('WebSocket connection closed: close event');
+    //             socket.close();
+    //         }
+    //     };
+    // })
+    // const [socket, setSocket] = useState();
+    // console.log(socket);
+    // const newSocket = `${wsUrl}?screen=Manual`;
+    const newSocket = new WebSocket(`${wsUrl}?screen=InputOutput`);
+    useEffect(() => {
+
+
+        const websocket = (socket) => {
+            // const Socket = socket
+            console.log("websocket function");
+            // Replace with your URL
+            // setSocket(newSocket)
+            socket.onopen = () => {
+                // setSocket(socket)
+                setwebsocketError(false)
+                console.log('WebSocket connection opened');
+
+
+            };
+
+            socket.onmessage = (event) => {
+                const res = JSON.parse(event.data)
+                console.log(res)
+
+                // if (res.Pop_up && res.message) {
+                //     setpopupStatus(res.Pop_up)
+                //     setpopupMessage(res.message)
+                // }
+                // else {
+                //     mainFunction(res)
+                // }
+                mainFunction(res)
+
+                setpopupStatus(res.Pop_up)
+                setpopupMessage(res.message)
+                setpopupTime(res.Time_stamp)
+
+            }
+
+            socket.onclose = () => {
+                if (!reconnectTimeout) {
+                    reconnectTimeout = setTimeout(() => {
+                        websocket(newSocket);
+                        reconnectTimeout = null;
+                    }, 2000); // Try to reconnect every 5 seconds
+                }
+
+                // setWebSocketStatus(true)
+                setwebsocketError(true)
+                // socket.close()
+                var date = new Date()
+                var dateArray = date.toISOString().split(".")
+                setpopupTime(dateArray[0].replace("T", " "))
+
+                // setTimeout(() => websocket(newSocket), 1000);
+
+
+                console.log('Websocket connection closed');
+            }
+
+            socket.onerror = (error) => {
+                if (!reconnectTimeout) {
+                    reconnectTimeout = setTimeout(() => {
+                        websocket(newSocket);
+                        reconnectTimeout = null;
+                    }, 2000); // Try to reconnect every 5 seconds
+                }
+
+                setwebsocketError(true)
+                var date = new Date()
+                var dateArray = date.toISOString().split(".")
+                setpopupTime(dateArray[0].replace("T", " "))
+
+
+                console.log("websocket connection error", error)
+            }
+
+
+        }
+        websocket(newSocket)
+
+        return () => {
+            if (newSocket) {
+                newSocket.close();
+                console.log('WebSocket connection closed');
+            }
+        };
+
+    }, [newSocket]);
+
 
     const mainFunction = (data) => {
-        console.log(data)
+
         if (data.MMtrip === true) {
             setmmt(true)
         }

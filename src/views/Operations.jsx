@@ -17,76 +17,91 @@ const Operations = () => {
     const [websocketError, setwebsocketError] = useState(false)
 
 
+    let reconnectTimeout
+    const newSocket = new WebSocket(`${wsUrl}?screen=Operations`);
     useEffect(() => {
-        const socket = new WebSocket(`${wsUrl}?screen=Operations`)
-        const websocket = () => {
-            // const socket = new WebSocket(`${wsUrl}?screen=Operations`)
 
-            // Assign socket to reference
 
-            socket.onopen = (event) => {
+        const websocket = (socket) => {
+            // const Socket = socket
+            console.log("websocket function");
+            // Replace with your URL
+            // setSocket(newSocket)
+            socket.onopen = () => {
+                // setSocket(socket)
                 setwebsocketError(false)
-                console.log("websocket established", event);
+                console.log('WebSocket connection opened');
 
-            }
+
+            };
+
             socket.onmessage = (event) => {
                 const res = JSON.parse(event.data)
                 console.log(res)
-                if (res.Cycle_status === 'On') {
-                    setStatus(false)
-                }
-                else if (res.Cycle_status === 'Off') {
-                    setStatus(true)
-                }
+
+                // if (res.Pop_up && res.message) {
+                //     setpopupStatus(res.Pop_up)
+                //     setpopupMessage(res.message)
+                // }
+                // else {
+                //     mainFunction(res)
+                // }
+
                 setpopupStatus(res.Pop_up)
                 setpopupMessage(res.message)
                 setpopupTime(res.Time_stamp)
+
             }
 
             socket.onclose = () => {
+                if (!reconnectTimeout) {
+                    reconnectTimeout = setTimeout(() => {
+                        websocket(newSocket);
+                        reconnectTimeout = null;
+                    }, 2000); // Try to reconnect every 5 seconds
+                }
+
+                // setWebSocketStatus(true)
                 // setwebsocketError(true)
                 // socket.close()
-
                 var date = new Date()
                 var dateArray = date.toISOString().split(".")
                 setpopupTime(dateArray[0].replace("T", " "))
 
-                setTimeout(websocket, 1000);
+                // setTimeout(() => websocket(newSocket), 1000);
+
+
                 console.log('Websocket connection closed');
-                // console.log(popupTime);
             }
 
             socket.onerror = (error) => {
+                if (!reconnectTimeout) {
+                    reconnectTimeout = setTimeout(() => {
+                        websocket(newSocket);
+                        reconnectTimeout = null;
+                    }, 2000); // Try to reconnect every 5 seconds
+                }
+
                 setwebsocketError(true)
                 var date = new Date()
                 var dateArray = date.toISOString().split(".")
                 setpopupTime(dateArray[0].replace("T", " "))
 
-                setTimeout(websocket, 1000);
+
                 console.log("websocket connection error", error)
             }
 
 
-
-
         }
-        // Create WebSocket connection on component mount
-        websocket()
+        websocket(newSocket)
         return () => {
-            if (socket) {
-                socket.close();
+            if (newSocket) {
+                newSocket.close();
                 console.log('WebSocket connection closed');
             }
         };
 
-        // Handle errors and cleanup on component unmount
-        // return () => {
-        //     if (socket) {
-        //         socket.close();
-        //     }
-        // };
-    }, []);  // Empty dependency array to run only once
-
+    }, [newSocket]);
 
     const CycleStart = () => {
 

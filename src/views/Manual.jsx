@@ -6,6 +6,8 @@ import Logo from '../assets/logo.png'
 import { useNavigate } from 'react-router-dom'
 import { AiFillHome } from 'react-icons/ai'
 import OverlayModal from './OverlayModal'
+
+// const newSocket = new WebSocket(`${wsUrl}?screen=Manual`);
 const Manual = () => {
     const [mmfStatus, setmmfStatus] = useState(false)
     const [mmrStatus, setmmrStatus] = useState(false)
@@ -17,8 +19,10 @@ const Manual = () => {
     const [popupMessage, setpopupMessage] = useState("")
     const [popupTime, setpopupTime] = useState("")
     const [websocketError, setwebsocketError] = useState(false)
-    // let url = `ws://192.168.29.144:8765?screen=Manual`
+    const [websocketStatus, setWebSocketStatus] = useState(false)
 
+    const url = `${wsUrl}?screen=Manual`
+    let reconnectTimeout
     // useEffect(() => {
     //     const socket = new WebSocket(`${wsUrl}?screen=Manual`)
 
@@ -65,23 +69,27 @@ const Manual = () => {
     //         }
     //     };
     // })
-    const [socket, setSocket] = useState(null);
-    const newSocket = `${wsUrl}?screen=Manual`;
-
-
+    // const [socket, setSocket] = useState();
+    // console.log(socket);
+    // const newSocket = `${wsUrl}?screen=Manual`;
+    const newSocket = new WebSocket(`${wsUrl}?screen=Manual`);
     useEffect(() => {
 
-        const websocket = () => {
-            const newSocket = new WebSocket(`${wsUrl}?screen=Manual`); // Replace with your URL
+
+        const websocket = (socket) => {
+            // const Socket = socket
+            console.log("websocket function");
+            // Replace with your URL
             // setSocket(newSocket)
-            newSocket.onopen = () => {
+            socket.onopen = () => {
+                // setSocket(socket)
                 setwebsocketError(false)
                 console.log('WebSocket connection opened');
 
 
             };
 
-            newSocket.onmessage = (event) => {
+            socket.onmessage = (event) => {
                 const res = JSON.parse(event.data)
                 console.log(res)
 
@@ -99,22 +107,51 @@ const Manual = () => {
 
             }
 
-            newSocket.onclose = () => {
+            socket.onclose = () => {
+                if (!reconnectTimeout) {
+                    reconnectTimeout = setTimeout(() => {
+                        websocket(newSocket);
+                        reconnectTimeout = null;
+                    }, 2000); // Try to reconnect every 5 seconds
+                }
+
+                // setWebSocketStatus(true)
                 setwebsocketError(true)
-                // newSocket.close()
-                setTimeout(websocket(), 1000);
+                // socket.close()
+                var date = new Date()
+                var dateArray = date.toISOString().split(".")
+                setpopupTime(dateArray[0].replace("T", " "))
+
+                // setTimeout(() => websocket(newSocket), 1000);
+
+
                 console.log('Websocket connection closed');
             }
 
-            newSocket.onerror = (error) => {
+            socket.onerror = (error) => {
+                if (!reconnectTimeout) {
+                    reconnectTimeout = setTimeout(() => {
+                        websocket(newSocket);
+                        reconnectTimeout = null;
+                    }, 2000); // Try to reconnect every 5 seconds
+                }
+
                 setwebsocketError(true)
-                setTimeout(websocket(), 1000);
+                var date = new Date()
+                var dateArray = date.toISOString().split(".")
+                setpopupTime(dateArray[0].replace("T", " "))
+
+
                 console.log("websocket connection error", error)
             }
 
 
         }
-        websocket()
+        websocket(newSocket)
+
+
+
+
         return () => {
             if (newSocket) {
                 newSocket.close();
@@ -439,7 +476,7 @@ const Manual = () => {
             {/* <Modal opened={popupStatus} withCloseButton={false} centered closeOnClickOutside={false}>
                 {popupMessage}
             </Modal> */}
-            {websocketError ? (<OverlayModal status={true} message={"Websocket Connection Error"} time={'00:00:00'} />) : (
+            {websocketError ? (<OverlayModal status={true} message={"Websocket Connection Error"} time={popupTime} />) : (
                 <OverlayModal status={popupStatus} message={popupMessage} time={popupTime} />
             )}
 

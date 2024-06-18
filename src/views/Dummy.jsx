@@ -191,18 +191,29 @@ const Dummy = () => {
     const [socket, setSocket] = useState(null);
 
     useEffect(() => {
-        const newSocket = new WebSocket(`${wsUrl}?screen=Manual`); // Replace with your URL
-        // newSocket.close()
-        newSocket.onopen = () => {
-            console.log('WebSocket connection opened');
-            setSocket(newSocket);
-        };
+        const newSocket = new WebSocket(`${wsUrl}?screen=Manual`);
+        const websocket = (socket) => {
+            const Socket = socket
+            // const newSocket = new WebSocket(`${wsUrl}?screen=Manual`); // Replace with your URL
+            // newSocket.close()
+            Socket.onopen = () => {
+                console.log('WebSocket connection opened');
+                setSocket(newSocket);
+            };
 
-        newSocket.onmessage = (event) => {
-            const res = JSON.parse(event.data)
-            console.log(res)
+            Socket.onmessage = (event) => {
+                const res = JSON.parse(event.data)
+                console.log(res)
+            }
+            Socket.onclose = () => {
+                setTimeout(() => {
+                    const sock = newSocket
+                    websocket(sock)
+                    console.log("connecting...");
+                }, 1000)
+            }
         }
-
+        websocket(newSocket)
         return () => {
             if (newSocket) {
                 newSocket.close();
