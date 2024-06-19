@@ -80,12 +80,12 @@ const Setting_3 = () => {
             }
 
             socket.onclose = () => {
-                if (!reconnectTimeout) {
-                    reconnectTimeout = setTimeout(() => {
-                        websocket(newSocket);
-                        reconnectTimeout = null;
-                    }, 2000); // Try to reconnect every 5 seconds
-                }
+                // if (!reconnectTimeout) {
+                //     reconnectTimeout = setTimeout(() => {
+                //         websocket(newSocket);
+                //         reconnectTimeout = null;
+                //     }, 2000); // Try to reconnect every 5 seconds
+                // }
 
                 // setWebSocketStatus(true)
                 // setwebsocketError(true)
