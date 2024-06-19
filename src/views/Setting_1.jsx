@@ -235,7 +235,7 @@ const Setting_1 = () => {
     // };
     return (
         <div style={{ height: "110vh" }} >
-            {websocketError ? (<OverlayModal status={true} message={"Websocket Connection Error"} time={'00:00:00'} />) : (
+            {websocketError ? (<OverlayModal status={true} message={"Websocket Connection Error"} time={popupTime} />) : (
                 <OverlayModal status={popupStatus} message={popupMessage} time={popupTime} />
             )}
             {/* <Flex direction={"column"} justify={"space-between"}> */}
@@ -275,6 +275,8 @@ const Setting_1 = () => {
                         {tcEditing ?
                             <Flex gap="0.5rem" align="center">
                                 <NumberInput
+                                    max={24}
+                                    min={0}
                                     h={40}
                                     hideControls
                                     value={tchours === 0 ? getTcHours : tchours}
@@ -283,6 +285,8 @@ const Setting_1 = () => {
                                 />
                                 <Text pt="0.5rem" fz="xl" fw={700}>:</Text>
                                 <NumberInput
+                                    max={59}
+                                    min={0}
                                     h={40}
                                     hideControls
                                     value={tcminutes === 0 ? getTcMinutes : tcminutes}
@@ -291,6 +295,8 @@ const Setting_1 = () => {
                                 />
                                 <Text pt="0.5rem" fz="xl" fw={700}>:</Text>
                                 <NumberInput
+                                    max={59}
+                                    min={0}
                                     h={40}
                                     hideControls
                                     value={tcseconds === 0 ? getTcSeconds : tcseconds}
@@ -410,6 +416,8 @@ const Setting_1 = () => {
                             //     }} />
                             <Flex gap="0.5rem" align="center">
                                 <NumberInput
+                                    max={24}
+                                    min={0}
                                     h={40}
                                     hideControls
                                     value={waitCyclehours === 0 ? getwaitCycleHours : waitCyclehours}
@@ -418,6 +426,8 @@ const Setting_1 = () => {
                                 />
                                 <Text pt="0.5rem" fz="xl" fw={700}>:</Text>
                                 <NumberInput
+                                    max={59}
+                                    min={0}
                                     h={40}
                                     hideControls
                                     value={waitCycleminutes === 0 ? getwaitCycleMinutes : waitCycleminutes}
@@ -426,6 +436,8 @@ const Setting_1 = () => {
                                 />
                                 <Text pt="0.5rem" fz="xl" fw={700}>:</Text>
                                 <NumberInput
+                                    max={59}
+                                    min={0}
                                     h={40}
                                     hideControls
                                     value={waitCycleseconds === 0 ? getwaitCycleSeconds : waitCycleseconds}

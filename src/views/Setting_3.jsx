@@ -171,7 +171,7 @@ const Setting_3 = () => {
     }
     return (
         <div style={{ height: "115vh" }}>
-            {websocketError ? (<OverlayModal status={true} message={"Websocket Connection Error"} time={'00:00:00'} />) : (
+            {websocketError ? (<OverlayModal status={true} message={"Websocket Connection Error"} time={popupTime} />) : (
                 <OverlayModal status={popupStatus} message={popupMessage} time={popupTime} />
             )}
             {/* <Flex direction={"column"} justify={"space-between"}> */}

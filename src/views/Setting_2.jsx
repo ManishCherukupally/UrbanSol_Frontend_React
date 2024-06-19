@@ -176,7 +176,7 @@ const Setting_2 = () => {
     }
     return (
         <div style={{ height: "100vh" }} >
-            {websocketError ? (<OverlayModal status={true} message={"Websocket Connection Error"} time={'00:00:00'} />) : (
+            {websocketError ? (<OverlayModal status={true} message={"Websocket Connection Error"} time={popupTime} />) : (
                 <OverlayModal status={popupStatus} message={popupMessage} time={popupTime} />
             )}
             {/* <Flex direction={"column"} justify={"space-between"}> */}
@@ -219,6 +219,7 @@ const Setting_2 = () => {
                         {/* <Text id="presenttcTime" fz={"xl"} fw={600}>123 Sec</Text> */}
                         {blowEditing ?
                             <NumberInput
+
                                 hideControls
                                 value={postblowTime === 0 ? blowTime : postblowTime} // Set initial value
                                 onChange={
@@ -236,6 +237,8 @@ const Setting_2 = () => {
                         {compostOutEditing ?
                             <Flex gap="0.5rem" align="center">
                                 <NumberInput
+                                    max={24}
+                                    min={0}
                                     h={40}
                                     hideControls
                                     value={compostOuthours}
@@ -244,6 +247,8 @@ const Setting_2 = () => {
                                 />
                                 <Text pt="0.5rem" fz="xl" fw={700}>:</Text>
                                 <NumberInput
+                                    max={59}
+                                    min={0}
                                     h={40}
                                     hideControls
                                     value={compostOutminutes}
@@ -252,6 +257,8 @@ const Setting_2 = () => {
                                 />
                                 <Text pt="0.5rem" fz="xl" fw={700}>:</Text>
                                 <NumberInput
+                                    max={59}
+                                    min={0}
                                     h={40}
                                     hideControls
                                     value={compostOutseconds}

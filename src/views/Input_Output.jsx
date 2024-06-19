@@ -516,7 +516,7 @@ const Input_Output = () => {
     return (
         <div>
             <Container size={"xl"}>
-                {websocketError ? (<OverlayModal status={true} message={"Websocket Connection Error"} time={'00:00:00'} />) : (
+                {websocketError ? (<OverlayModal status={true} message={"Websocket Connection Error"} time={popupTime} />) : (
                     <OverlayModal status={popupStatus} message={popupMessage} time={popupTime} />
                 )}
                 <Grid>

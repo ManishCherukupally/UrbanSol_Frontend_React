@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { wsUrl } from './config';
 import { useNavigate } from 'react-router-dom';
 import OverlayModal from './OverlayModal';
+// import jsonData from "./ip.json"
 
 const Operations = () => {
     const navigate = useNavigate()
@@ -21,7 +22,7 @@ const Operations = () => {
     const newSocket = new WebSocket(`${wsUrl}?screen=Operations`);
     useEffect(() => {
 
-
+        console.log(wsUrl);
         const websocket = (socket) => {
             // const Socket = socket
             console.log("websocket function");
@@ -169,6 +170,7 @@ const Operations = () => {
 
     return (
         <div style={{ height: "auto" }} >
+
             {websocketError ? (<OverlayModal status={true} message={"Websocket Connection Error"} time={popupTime} />) : (
                 <OverlayModal status={popupStatus} message={popupMessage} time={popupTime} />
             )}
