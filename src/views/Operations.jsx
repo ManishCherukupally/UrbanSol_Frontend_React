@@ -4,131 +4,153 @@ import React, { useState, useRef, useEffect } from 'react';
 import { wsUrl } from './config';
 import { useNavigate } from 'react-router-dom';
 import OverlayModal from './OverlayModal';
-// import jsonData from "./ip.json"
 
 const Operations = () => {
     const navigate = useNavigate()
-    // const url = `ws://192.168.29.144:8765?screen=Operations`;
-    // const [status, { toggle }] = useDisclosure(true);
-    const [status, setStatus] = useState(true)
-
     const [popupStatus, setpopupStatus] = useState(null)
     const [popupMessage, setpopupMessage] = useState("")
     const [popupTime, setpopupTime] = useState("")
+    const [status, setStatus] = useState("")
     const [websocketError, setwebsocketError] = useState(false)
+    // const url = `ws://192.168.29.144:8765?screen=Operations`;
+    // const [status, { toggle }] = useDisclosure(true);
+    const socketRef = useRef(null);
+    const reconnectTimeoutRef = useRef(null);
+    const isMountedRef = useRef(true); // Track if the component is mounted
 
+    const connectWebSocket = () => {
+        if (!isMountedRef.current) return; // Prevent connecting if not mounted
 
-    let reconnectTimeout
-    const newSocket = new WebSocket(`${wsUrl}?screen=Operations`);
-    useEffect(() => {
+        socketRef.current = new WebSocket(`${wsUrl}?screen=Operations`);
 
-        console.log(wsUrl);
-        const websocket = (socket) => {
-            // const Socket = socket
-            console.log("websocket function");
-            // Replace with your URL
-            // setSocket(newSocket)
-            socket.onopen = () => {
-                // setSocket(socket)
-                setwebsocketError(false)
-                console.log('WebSocket connection opened');
-
-
-            };
-
-            socket.onmessage = (event) => {
-                const res = JSON.parse(event.data)
-                console.log(res)
-
-                // if (res.Pop_up && res.message) {
-                //     setpopupStatus(res.Pop_up)
-                //     setpopupMessage(res.message)
-                // }
-                // else {
-                //     mainFunction(res)
-                // }
-
-                setpopupStatus(res.Pop_up)
-                setpopupMessage(res.message)
-                setpopupTime(res.Time_stamp)
-
-            }
-
-            socket.onclose = () => {
-                // if (!reconnectTimeout) {
-                //     reconnectTimeout = setTimeout(() => {
-                //         websocket(newSocket);
-                //         reconnectTimeout = null;
-                //     }, 2000); // Try to reconnect every 5 seconds
-                // }
-
-                // setWebSocketStatus(true)
-                // setwebsocketError(true)
-                // socket.close()
-                var date = new Date()
-                var dateArray = date.toISOString().split(".")
-                setpopupTime(dateArray[0].replace("T", " "))
-
-                // setTimeout(() => websocket(newSocket), 1000);
-
-
-                console.log('Websocket connection closed');
-            }
-
-            socket.onerror = (error) => {
-                if (!reconnectTimeout) {
-                    reconnectTimeout = setTimeout(() => {
-                        websocket(newSocket);
-                        reconnectTimeout = null;
-                    }, 2000); // Try to reconnect every 5 seconds
-                }
-
-                setwebsocketError(true)
-                var date = new Date()
-                var dateArray = date.toISOString().split(".")
-                setpopupTime(dateArray[0].replace("T", " "))
-
-
-                console.log("websocket connection error", error)
-            }
-
-
-        }
-        websocket(newSocket)
-        return () => {
-            if (newSocket) {
-                newSocket.close();
-                console.log('WebSocket connection closed');
+        socketRef.current.onopen = () => {
+            console.log("WebSocket connection for Page 1 established");
+            // setIsConnected(true);
+            if (reconnectTimeoutRef.current) {
+                clearTimeout(reconnectTimeoutRef.current);
+                reconnectTimeoutRef.current = null;
             }
         };
 
-    }, [newSocket]);
-
-    const CycleStart = () => {
-
-        const socket = new WebSocket(`${wsUrl}?screen=Operations`)
-        const messageObj = {
-
-            Cycle_status: 'On'
-        }
-
-
-        socket.onopen = (event) => {
-            // console.log(event)
-            console.log("websocket established", event);
-
-            socket.send(JSON.stringify(messageObj));
-        }
-        socket.onmessage = (event) => {
+        socketRef.current.onmessage = (event) => {
+            // setResponse(event.data);
             const res = JSON.parse(event.data)
-            console.log(res)
+            console.log(res);
+            setwebsocketError(false)
+            setpopupStatus(res.Pop_up)
+            setpopupMessage(res.message)
+            setpopupTime(res.Time_stamp)
+
             if (res.Cycle_status === 'On') {
                 setStatus(false)
             }
             else if (res.Cycle_status === 'Off') {
                 setStatus(true)
             }
+        };
+
+        socketRef.current.onclose = () => {
+            console.log("WebSocket connection for Page 1 closed");
+            // setIsConnected(false);
+
+        };
+
+        socketRef.current.onerror = (error) => {
+            setwebsocketError(true)
+
+            var date = new Date()
+            var dateArray = date.toISOString().split(".")
+            setpopupTime(dateArray[0].replace("T", " "))
+
+            console.error("WebSocket error on Page 1:", error);
+            socketRef.current.close();
+            if (isMountedRef.current) attemptReconnect();
+        };
+    };
+
+    const attemptReconnect = () => {
+        setTimeout(() => {
+            console.log("Attempting to reconnect...");
+            connectWebSocket();
+        }, 5000); // Attempt reconnection after 5 seconds
+
+    };
+
+    useEffect(() => {
+        isMountedRef.current = true;
+        connectWebSocket();
+
+        // return () => {
+        //     isMountedRef.current = false; // Set to false when unmounting
+        //     if (socketRef.current) {
+        //         socketRef.current.close();
+        //     }
+        //     if (reconnectTimeoutRef.current) {
+        //         clearTimeout(reconnectTimeoutRef.current);
+        //     }
+        // };
+    }, []);
+
+    const CycleStart = () => {
+
+        // const socket = new WebSocket(`${wsUrl}?screen=Operations`)
+        socketRef.current = new WebSocket(`${wsUrl}?screen=Operations`);
+        const messageObj = {
+
+            Cycle_status: 'On'
         }
+
+        // if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
+        //     socketRef.current.send(JSON.stringify(messageObj));
+        //     console.log(('sent'));
+        // }
+        socketRef.current.onopen = () => {
+            socketRef.current.send(JSON.stringify(messageObj));
+        }
+
+        socketRef.current.onmessage = (event) => {
+            // setResponse(event.data);
+            const res = JSON.parse(event.data)
+            console.log(res);
+
+            setwebsocketError(false)
+            setpopupStatus(res.Pop_up)
+            setpopupMessage(res.message)
+            setpopupTime(res.Time_stamp)
+
+            if (res.Cycle_status === 'On') {
+                setStatus(false)
+            }
+            else if (res.Cycle_status === 'Off') {
+                setStatus(true)
+            }
+            console.log(status);
+
+
+        };
+        socketRef.current.onclose = () => {
+            console.log("cycle stopped..");
+            // setwebsocketError(true)
+
+            // var date = new Date()
+            // var dateArray = date.toISOString().split(".")
+            // setpopupTime(dateArray[0].replace("T", " "))
+
+            // socketRef.current.close();
+            attemptReconnect();
+        }
+
+        socketRef.current.onerror = (error) => {
+            setwebsocketError(true)
+
+            var date = new Date()
+            var dateArray = date.toISOString().split(".")
+            setpopupTime(dateArray[0].replace("T", " "))
+
+            console.error("WebSocket error on Page 1:", error);
+            socketRef.current.close();
+            attemptReconnect();
+        };
 
         // setStatus(false)
         // const messageObj = { Cycle_status: 'On' };
@@ -137,30 +159,61 @@ const Operations = () => {
 
     const CycleStop = () => {
 
-        const socket = new WebSocket(`${wsUrl}?screen=Operations`)
+        // const socket = new WebSocket(`${wsUrl}?screen=Operations`)
+        socketRef.current = new WebSocket(`${wsUrl}?screen=Operations`);
         const messageObj = {
 
             Cycle_status: 'Off'
         }
 
 
-        socket.onopen = (event) => {
-            // console.log(event)
-            console.log("websocket established", event);
 
-            socket.send(JSON.stringify(messageObj));
+        socketRef.current.onopen = () => {
+            socketRef.current.send(JSON.stringify(messageObj));
         }
-        socket.onmessage = (event) => {
+
+        socketRef.current.onmessage = (event) => {
+            // setResponse(event.data);
             const res = JSON.parse(event.data)
-            console.log(res)
+            console.log(res);
+            setwebsocketError(false)
+            setpopupStatus(res.Pop_up)
+            setpopupMessage(res.message)
+            setpopupTime(res.Time_stamp)
+
             if (res.Cycle_status === 'On') {
                 setStatus(false)
             }
             else if (res.Cycle_status === 'Off') {
                 setStatus(true)
             }
+            console.log(status);
+        };
+
+        socketRef.current.onclose = () => {
+            console.log("cycle is ready to start..");
+            // setwebsocketError(true)
+
+            // var date = new Date()
+            // var dateArray = date.toISOString().split(".")
+            // setpopupTime(dateArray[0].replace("T", " "))
+
+            // // console.error("WebSocket error on Page 1:", error);
+            // socketRef.current.close();
+            attemptReconnect();
         }
 
+        socketRef.current.onerror = (error) => {
+            setwebsocketError(true)
+
+            var date = new Date()
+            var dateArray = date.toISOString().split(".")
+            setpopupTime(dateArray[0].replace("T", " "))
+
+            console.error("WebSocket error on Page 1:", error);
+            socketRef.current.close();
+            attemptReconnect();
+        };
         // setStatus(true)
         // const messageObj = { Cycle_status: 'Off' };
         // sendMessage(messageObj);
@@ -170,7 +223,6 @@ const Operations = () => {
 
     return (
         <div style={{ height: "auto" }} >
-
             {websocketError ? (<OverlayModal status={true} message={"Websocket Connection Error"} time={popupTime} />) : (
                 <OverlayModal status={popupStatus} message={popupMessage} time={popupTime} />
             )}

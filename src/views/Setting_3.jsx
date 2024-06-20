@@ -41,97 +41,75 @@ const Setting_3 = () => {
     const [popupMessage, setpopupMessage] = useState("")
     const [popupTime, setpopupTime] = useState("")
     const [websocketError, setwebsocketError] = useState(false)
+    const socketRef = useRef(null);
+    const reconnectTimeoutRef = useRef(null);
+    const isMountedRef = useRef(true); // Track if the component is mounted
 
+    const connectWebSocket = () => {
+        if (!isMountedRef.current) return; // Prevent connecting if not mounted
 
-    let reconnectTimeout
-    const newSocket = new WebSocket(`${wsUrl}?screen=Settings`);
-    useEffect(() => {
+        socketRef.current = new WebSocket(`${wsUrl}?screen=Settings`);
 
-
-        const websocket = (socket) => {
-            // const Socket = socket
-            console.log("websocket function");
-            // Replace with your URL
-            // setSocket(newSocket)
-            socket.onopen = () => {
-                // setSocket(socket)
-                setwebsocketError(false)
-                console.log('WebSocket connection opened');
-
-
-            };
-
-            socket.onmessage = (event) => {
-                const res = JSON.parse(event.data)
-                console.log(res)
-
-                // if (res.Pop_up && res.message) {
-                //     setpopupStatus(res.Pop_up)
-                //     setpopupMessage(res.message)
-                // }
-                // else {
-                //     mainFunction(res)
-                // }
-                mainFunction(res)
-                setpopupStatus(res.Pop_up)
-                setpopupMessage(res.message)
-                setpopupTime(res.Time_stamp)
-
-            }
-
-            socket.onclose = () => {
-                // if (!reconnectTimeout) {
-                //     reconnectTimeout = setTimeout(() => {
-                //         websocket(newSocket);
-                //         reconnectTimeout = null;
-                //     }, 2000); // Try to reconnect every 5 seconds
-                // }
-
-                // setWebSocketStatus(true)
-                // setwebsocketError(true)
-                // socket.close()
-                var date = new Date()
-                var dateArray = date.toISOString().split(".")
-                setpopupTime(dateArray[0].replace("T", " "))
-
-                // setTimeout(() => websocket(newSocket), 1000);
-
-
-                console.log('Websocket connection closed');
-            }
-
-            socket.onerror = (error) => {
-                if (!reconnectTimeout) {
-                    reconnectTimeout = setTimeout(() => {
-                        websocket(newSocket);
-                        reconnectTimeout = null;
-                    }, 2000); // Try to reconnect every 5 seconds
-                }
-
-                setwebsocketError(true)
-                var date = new Date()
-                var dateArray = date.toISOString().split(".")
-                setpopupTime(dateArray[0].replace("T", " "))
-
-
-                console.log("websocket connection error", error)
-            }
-
-
-        }
-        websocket(newSocket)
-
-
-
-
-        return () => {
-            if (newSocket) {
-                newSocket.close();
-                console.log('WebSocket connection closed');
+        socketRef.current.onopen = () => {
+            console.log("WebSocket connection for Page 1 established");
+            // setIsConnected(true);
+            if (reconnectTimeoutRef.current) {
+                clearTimeout(reconnectTimeoutRef.current);
+                reconnectTimeoutRef.current = null;
             }
         };
 
-    }, [newSocket]);
+        socketRef.current.onmessage = (event) => {
+            const res = JSON.parse(event.data)
+            mainFunction(res)
+            setwebsocketError(false)
+            setpopupStatus(res.Pop_up)
+            setpopupMessage(res.message)
+            setpopupTime(res.Time_stamp)
+        };
+
+        socketRef.current.onclose = () => {
+            console.log("WebSocket connection  closed");
+            // setIsConnected(false);
+            attemptReconnect();
+
+        };
+
+        socketRef.current.onerror = (error) => {
+            setwebsocketError(true)
+
+            var date = new Date()
+            var dateArray = date.toISOString().split(".")
+            setpopupTime(dateArray[0].replace("T", " "))
+
+            console.error("WebSocket error:", error);
+            socketRef.current.close();
+            if (isMountedRef.current) attemptReconnect();
+        };
+    };
+
+    const attemptReconnect = () => {
+        setTimeout(() => {
+            console.log("Attempting to reconnect...");
+            connectWebSocket();
+        }, 5000); // Attempt reconnection after 5 seconds
+
+    };
+
+    useEffect(() => {
+        isMountedRef.current = true;
+        connectWebSocket();
+
+        return () => {
+            isMountedRef.current = false; // Set to false when unmounting
+            if (socketRef.current) {
+                socketRef.current.close();
+            }
+            if (reconnectTimeoutRef.current) {
+                clearTimeout(reconnectTimeoutRef.current);
+            }
+        };
+    }, []);
 
     const mainFunction = (data) => {
         // setTcTime(data.total_cycle_time)
@@ -160,12 +138,37 @@ const Setting_3 = () => {
 
         }
 
-        const socket = new WebSocket(`${wsUrl}?screen=Settings`)
+        socketRef.current = new WebSocket(`${wsUrl}?screen=Settings`)
 
-        socket.onopen = (event) => {
+        socketRef.current.onopen = (event) => {
             console.log("websocket established", event);
-            socket.send(JSON.stringify(messageObj));
+            socketRef.current.send(JSON.stringify(messageObj));
         }
+
+        socketRef.current.onmessage = (event) => {
+            const res = JSON.parse(event.data)
+            mainFunction(res)
+            setwebsocketError(false)
+            setpopupStatus(res.Pop_up)
+            setpopupMessage(res.message)
+            setpopupTime(res.Time_stamp)
+        };
+
+        socketRef.current.onclose = (event) => {
+            console.log("Websocket closed", event)
+        }
+
+        socketRef.current.onerror = (error) => {
+            setwebsocketError(true)
+
+            var date = new Date()
+            var dateArray = date.toISOString().split(".")
+            setpopupTime(dateArray[0].replace("T", " "))
+
+            console.error("WebSocket error on Page 1:", error);
+            socketRef.current.close();
+            attemptReconnect();
+        };
 
 
     }
