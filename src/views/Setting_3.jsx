@@ -72,7 +72,7 @@ const Setting_3 = () => {
         socketRef.current.onclose = () => {
             console.log("WebSocket connection  closed");
             // setIsConnected(false);
-            attemptReconnect();
+            // attemptReconnect();
 
         };
 
