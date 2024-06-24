@@ -33,9 +33,9 @@ const Setting_2 = () => {
     const [postcycles, setPostcycles] = useState(0)
 
 
-    const [compostOuthours, setcompostOutHours] = useState(0);
-    const [compostOutminutes, setcompostOutMinutes] = useState(0);
-    const [compostOutseconds, setcompostOutSeconds] = useState(0);
+    // const [compostOuthours, setcompostOutHours] = useState(0);
+    // const [compostOutminutes, setcompostOutMinutes] = useState(0);
+    // const [compostOutseconds, setcompostOutSeconds] = useState(0);
 
     const [popupStatus, setpopupStatus] = useState(null)
     const [popupMessage, setpopupMessage] = useState("")
@@ -135,7 +135,7 @@ const Setting_2 = () => {
         setupperTempEditing(false)
         setcyclesEditing(false)
 
-        const CompostOutTotalSeconds = compostOuthours * 3600 + compostOutminutes * 60 + compostOutseconds;
+        const CompostOutTotalSeconds = getCompostOutHours * 3600 + getCompostOutMinutes * 60 + getCompostOutSeconds;
 
         const messageObj = {
             blower: postblowTime === 0 ? blowTime : postblowTime,
@@ -250,8 +250,8 @@ const Setting_2 = () => {
                                     min={0}
                                     h={40}
                                     hideControls
-                                    value={compostOuthours}
-                                    onChange={setcompostOutHours}
+                                    value={getCompostOutHours}
+                                    onChange={setgetCompostOutHours}
                                     placeholder="Hours"
                                 />
                                 <Text pt="0.5rem" fz="xl" fw={700}>:</Text>
@@ -260,8 +260,8 @@ const Setting_2 = () => {
                                     min={0}
                                     h={40}
                                     hideControls
-                                    value={compostOutminutes}
-                                    onChange={setcompostOutMinutes}
+                                    value={getCompostOutMinutes}
+                                    onChange={setgetCompostOutMinutes}
                                     placeholder="Minutes"
                                 />
                                 <Text pt="0.5rem" fz="xl" fw={700}>:</Text>
@@ -270,8 +270,8 @@ const Setting_2 = () => {
                                     min={0}
                                     h={40}
                                     hideControls
-                                    value={compostOutseconds}
-                                    onChange={setcompostOutSeconds}
+                                    value={getCompostOutSeconds}
+                                    onChange={setgetCompostOutSeconds}
                                     placeholder="Seconds"
                                 />
 

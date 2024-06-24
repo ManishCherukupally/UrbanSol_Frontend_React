@@ -46,13 +46,13 @@ const Setting_1 = () => {
 
 
 
-    const [tchours, setTcHours] = useState(0);
-    const [tcminutes, setTCMinutes] = useState(0);
-    const [tcseconds, setTcSeconds] = useState(0);
+    // const [tchours, setTcHours] = useState(0);
+    // const [tcminutes, setTCMinutes] = useState(0);
+    // const [tcseconds, setTcSeconds] = useState(0);
 
-    const [waitCyclehours, setwaitCycleHours] = useState(0);
-    const [waitCycleminutes, setwaitCycleMinutes] = useState(0);
-    const [waitCycleseconds, setwaitCycleSeconds] = useState(0);
+    // const [waitCyclehours, setwaitCycleHours] = useState(0);
+    // const [waitCycleminutes, setwaitCycleMinutes] = useState(0);
+    // const [waitCycleseconds, setwaitCycleSeconds] = useState(0);
 
     const [popupStatus, setpopupStatus] = useState(null)
     const [popupMessage, setpopupMessage] = useState("")
@@ -157,8 +157,8 @@ const Setting_1 = () => {
         setwaitCycleEditing(false)
 
 
-        const TCtotalSeconds = tchours * 3600 + tcminutes * 60 + tcseconds;
-        const WaitCycletotalSeconds = waitCyclehours * 3600 + waitCycleminutes * 60 + waitCycleseconds
+        const TCtotalSeconds = getTcHours * 3600 + getTcMinutes * 60 + getTcSeconds;
+        const WaitCycletotalSeconds = getwaitCycleHours * 3600 + getwaitCycleMinutes * 60 + getwaitCycleSeconds
         const messageObj = {
 
             total_cycle_time: TCtotalSeconds,
@@ -252,8 +252,8 @@ const Setting_1 = () => {
                                     min={0}
                                     h={40}
                                     hideControls
-                                    value={tchours === 0 ? getTcHours : tchours}
-                                    onChange={setTcHours}
+                                    value={getTcHours}
+                                    onChange={setgetTcHours}
                                     placeholder="Hours"
                                 />
                                 <Text pt="0.5rem" fz="xl" fw={700}>:</Text>
@@ -262,8 +262,8 @@ const Setting_1 = () => {
                                     min={0}
                                     h={40}
                                     hideControls
-                                    value={tcminutes === 0 ? getTcMinutes : tcminutes}
-                                    onChange={setTCMinutes}
+                                    value={getTcMinutes}
+                                    onChange={setgetTcMinutes}
                                     placeholder="Minutes"
                                 />
                                 <Text pt="0.5rem" fz="xl" fw={700}>:</Text>
@@ -272,8 +272,8 @@ const Setting_1 = () => {
                                     min={0}
                                     h={40}
                                     hideControls
-                                    value={tcseconds === 0 ? getTcSeconds : tcseconds}
-                                    onChange={setTcSeconds}
+                                    value={getTcSeconds}
+                                    onChange={setgetTcSeconds}
                                     placeholder="Seconds"
                                 />
 
@@ -412,8 +412,8 @@ const Setting_1 = () => {
                                     min={0}
                                     h={40}
                                     hideControls
-                                    value={waitCyclehours === 0 ? getwaitCycleHours : waitCyclehours}
-                                    onChange={setwaitCycleHours}
+                                    value={getwaitCycleHours}
+                                    onChange={setgetwaitCycleHours}
                                     placeholder="Hours"
                                 />
                                 <Text pt="0.5rem" fz="xl" fw={700}>:</Text>
@@ -422,8 +422,8 @@ const Setting_1 = () => {
                                     min={0}
                                     h={40}
                                     hideControls
-                                    value={waitCycleminutes === 0 ? getwaitCycleMinutes : waitCycleminutes}
-                                    onChange={setwaitCycleMinutes}
+                                    value={getwaitCycleMinutes}
+                                    onChange={setgetwaitCycleMinutes}
                                     placeholder="Minutes"
                                 />
                                 <Text pt="0.5rem" fz="xl" fw={700}>:</Text>
@@ -432,8 +432,8 @@ const Setting_1 = () => {
                                     min={0}
                                     h={40}
                                     hideControls
-                                    value={waitCycleseconds === 0 ? getwaitCycleSeconds : waitCycleseconds}
-                                    onChange={setwaitCycleSeconds}
+                                    value={getwaitCycleSeconds}
+                                    onChange={setgetwaitCycleSeconds}
                                     placeholder="Seconds"
                                 />
 
