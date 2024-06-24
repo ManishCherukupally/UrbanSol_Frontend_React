@@ -11,6 +11,8 @@ const Setting_1 = () => {
 
     const navigate = useNavigate()
 
+    const [saveStatus, setSaveStatus] = useState(true)
+
     const [tcEditing, setTcEditing] = useState(false);
     const [getTcHours, setgetTcHours] = useState(0);
     const [getTcMinutes, setgetTcMinutes] = useState(0);
@@ -306,7 +308,10 @@ const Setting_1 = () => {
                         }
 
                         <Button h={"3rem"} w={"5rem"} c={"black"} style={{ backgroundColor: "#e1e1e1" }}
-                            onClick={() => setTcEditing(true)}>Edit</Button>
+                            onClick={() => {
+                                setTcEditing(true)
+                                setSaveStatus(false)
+                            }}>Edit</Button>
 
 
 
@@ -321,7 +326,11 @@ const Setting_1 = () => {
                             <Text fz={"xl"} fw={600}>{fwdTime} Sec </Text>
                         }
                         <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
-                            onClick={() => setfwdEditing(true)} style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
+                            onClick={() => {
+                                setfwdEditing(true)
+                                setSaveStatus(false)
+                            }
+                            } style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
 
 
 
@@ -338,7 +347,11 @@ const Setting_1 = () => {
                             <Text fz={"xl"} fw={600}>{wait1Time} Sec </Text>
                         }
                         <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
-                            onClick={() => setwait1Editing(true)} style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
+                            onClick={() => {
+                                setwait1Editing(true)
+                                setSaveStatus(false)
+                            }
+                            } style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
 
 
 
@@ -355,7 +368,11 @@ const Setting_1 = () => {
                             <Text fz={"xl"} fw={600}>{revTime} Sec</Text>
                         }
                         <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
-                            onClick={() => setrevEditing(true)} style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
+                            onClick={() => {
+                                setrevEditing(true)
+                                setSaveStatus(false)
+                            }
+                            } style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
 
 
 
@@ -372,7 +389,11 @@ const Setting_1 = () => {
                             <Text fz={"xl"} fw={600}>{wait2Time} Sec</Text>
                         }
                         <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
-                            onClick={() => setwait2Editing(true)} style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
+                            onClick={() => {
+                                setwait2Editing(true)
+                                setSaveStatus(false)
+                            }
+                            } style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
 
 
 
@@ -437,7 +458,11 @@ const Setting_1 = () => {
                             </Group>
                         }
                         <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
-                            onClick={() => setwaitCycleEditing(true)} style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
+                            onClick={() => {
+                                setwaitCycleEditing(true)
+                                setSaveStatus(false)
+                            }
+                            } style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
 
                     </SimpleGrid>
 
@@ -449,7 +474,7 @@ const Setting_1 = () => {
                     </div>
 
                     <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                        <Button radius={10} id="saveButton" onClick={handleSaveButton} fz={"lg"} h={"3rem"} style={{ backgroundColor: "#d10000" }}>SAVE</Button>
+                        <Button disabled={saveStatus ? true : false} radius={10} id="saveButton" onClick={handleSaveButton} fz={"lg"} h={"3rem"} style={{ backgroundColor: saveStatus ? "grey" : "#d10000" }}>SAVE</Button>
                     </div>
                 </Grid.Col>
             </Grid>

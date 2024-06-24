@@ -15,6 +15,7 @@ const Setting_3 = () => {
 
     const navigate = useNavigate()
 
+    const [saveStatus, setSaveStatus] = useState(true)
 
     const [heaterEditing, setheaterEditing] = useState(false);
     const [heaterTime, setheaterTime] = useState(0);
@@ -220,7 +221,11 @@ const Setting_3 = () => {
                             <Text fz={"xl"} fw={600}>{heaterTime}° C </Text>
                         }
                         <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
-                            onClick={() => setheaterEditing(true)} style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
+                            onClick={() => {
+                                setheaterEditing(true)
+                                setSaveStatus(false)
+                            }
+                            } style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
 
 
                         <Text fz={"xl"} fw={700}>Overload Current  Limit
@@ -235,7 +240,11 @@ const Setting_3 = () => {
                             <Text fz={"xl"} fw={600}>{overLoadTime} A </Text>
                         }
                         <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
-                            onClick={() => setoverLoadEditing(true)} style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
+                            onClick={() => {
+                                setoverLoadEditing(true)
+                                setSaveStatus(false)
+                            }
+                            } style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
 
 
 
@@ -253,7 +262,11 @@ const Setting_3 = () => {
                             <Text fz={"xl"} fw={600}>{crusherStartTime} Sec </Text>
                         }
                         <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
-                            onClick={() => setcrusherStartEditing(true)} style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
+                            onClick={() => {
+                                setcrusherStartEditing(true)
+                                setSaveStatus(false)
+                            }
+                            } style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
 
 
 
@@ -271,7 +284,11 @@ const Setting_3 = () => {
                             <Text fz={"xl"} fw={600}>{crusherRevTime} Sec</Text>
                         }
                         <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
-                            onClick={() => setcrusherRevEditing(true)} style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
+                            onClick={() => {
+                                setcrusherRevEditing(true)
+                                setSaveStatus(false)
+                            }
+                            } style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
 
 
 
@@ -288,7 +305,11 @@ const Setting_3 = () => {
                             <Text fz={"xl"} fw={600}>{currentFreqTime} Hz</Text>
                         }
                         <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
-                            onClick={() => setcurrentFreqEditing(true)} style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
+                            onClick={() => {
+                                setcurrentFreqEditing(true)
+                                setSaveStatus(false)
+                            }
+                            } style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
 
 
                     </SimpleGrid>
@@ -301,7 +322,7 @@ const Setting_3 = () => {
                     </div> */}
 
                     <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                        <Button radius={10} id="saveButton" onClick={handleSaveButton} fz={"lg"} h={"3rem"} style={{ backgroundColor: "#d10000" }}>SAVE</Button>
+                        <Button disabled={saveStatus ? true : false} radius={10} id="saveButton" onClick={handleSaveButton} fz={"lg"} h={"3rem"} style={{ backgroundColor: saveStatus ? "grey" : "#d10000" }}>SAVE</Button>
                     </div>
                 </Grid.Col>
             </Grid>

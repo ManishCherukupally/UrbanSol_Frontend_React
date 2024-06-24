@@ -9,6 +9,8 @@ const Setting_2 = () => {
 
     const navigate = useNavigate()
 
+    const [saveStatus, setSaveStatus] = useState(true)
+
     const [blowEditing, setblowEditing] = useState(false);
     const [blowTime, setblowTime] = useState(0);
     const [postblowTime, setPostblowTime] = useState(0)
@@ -231,7 +233,11 @@ const Setting_2 = () => {
                         }
 
                         <Button h={"3rem"} w={"5rem"} c={"black"} style={{ backgroundColor: "#e1e1e1" }}
-                            onClick={() => setblowEditing(true)}>Edit</Button>
+                            onClick={() => {
+                                setblowEditing(true)
+                                setSaveStatus(false)
+                            }
+                            }>Edit</Button>
 
 
 
@@ -290,7 +296,11 @@ const Setting_2 = () => {
                             </Group>
                         }
                         <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
-                            onClick={() => setcompostOutEditing(true)} style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
+                            onClick={() => {
+                                setcompostOutEditing(true)
+                                setSaveStatus(false)
+                            }
+                            } style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
 
 
                         {/* <Flex direction={"column"} h={"11rem"} justify={"space-between"}>
@@ -320,7 +330,11 @@ const Setting_2 = () => {
                             <Text fz={"xl"} fw={600}>{lowerTempTime}° C </Text>
                         }
                         <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
-                            onClick={() => setlowerTempEditing(true)} style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
+                            onClick={() => {
+                                setlowerTempEditing(true)
+                                setSaveStatus(false)
+                            }
+                            } style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
 
 
                         <Text fz={"xl"} fw={700}>Heater Temperature Upper Limit</Text>
@@ -339,7 +353,11 @@ const Setting_2 = () => {
                             <Text fz={"xl"} fw={600}>{upperTempTime}° C</Text>
                         }
                         <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
-                            onClick={() => setupperTempEditing(true)} style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
+                            onClick={() => {
+                                setupperTempEditing(true)
+                                setSaveStatus(false)
+                            }
+                            } style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
 
 
                         {/* <Flex h={"11rem"} align={"center"}>
@@ -425,7 +443,11 @@ const Setting_2 = () => {
                             <Text fz={"xl"} fw={600}>{cycles} </Text>
                         }
                         <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
-                            onClick={() => setcyclesEditing(true)} style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
+                            onClick={() => {
+                                setcyclesEditing(true)
+                                setSaveStatus(false)
+                            }
+                            } style={{ backgroundColor: "#e1e1e1" }}>Edit</Button>
 
                     </SimpleGrid>
                 </Grid.Col>
@@ -436,7 +458,7 @@ const Setting_2 = () => {
                     </div>
 
                     <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                        <Button radius={10} id="saveButton" onClick={handleSaveButton} fz={"lg"} h={"3rem"} style={{ backgroundColor: "#d10000" }}>SAVE</Button>
+                        <Button disabled={saveStatus ? true : false} radius={10} id="saveButton" onClick={handleSaveButton} fz={"lg"} h={"3rem"} style={{ backgroundColor: saveStatus ? "grey" : "#d10000" }}>SAVE</Button>
                     </div>
                 </Grid.Col>
             </Grid>
