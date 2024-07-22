@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Button, Card, Container, Flex, Grid, Group, NumberInput, SimpleGrid, Space, Text, TextInput } from '@mantine/core'
+import { Button, Card, Container, Drawer, Flex, Grid, Group, NumberInput, SimpleGrid, Space, Text, TextInput } from '@mantine/core'
 import { useNavigate } from 'react-router-dom'
 import { wsUrl } from './config';
 import { MdArrowLeft } from 'react-icons/md';
 import OverlayModal from './OverlayModal';
+import NumPad from '../Numpad';
 const Setting_3 = () => {
     // let url = `ws://192.168.29.144:8765?screen=Settings`
 
@@ -11,6 +12,39 @@ const Setting_3 = () => {
     // const socketRef = useRef(null);  // Store WebSocket reference
 
     // socketRef.current = socket;  // Assign socket to reference
+    const [inputs, setInputs] = useState({
+        heaterTemp: '',
+        overLoadTime: '',
+        crusherStartTime: '',
+        crusherRevTime: '',
+        currentFreqTime: '',
+
+    });
+
+    const [activeField, setActiveField] = useState(null);
+    const [numPadopened, setnumPadOpened] = useState(false);
+
+    const handleInputClick = (field) => {
+        setActiveField(field);
+        setnumPadOpened(true);
+    };
+
+    const handleButtonClick = (value) => {
+        if (value === 'backspace') {
+            setInputs((prevInputs) => ({
+                ...prevInputs,
+                [activeField]: typeof prevInputs[activeField] === 'string' ? prevInputs[activeField].slice(0, -1) : '',
+            }));
+        } else if (value === 'enter') {
+            setnumPadOpened(false);
+            setActiveField(null);
+        } else {
+            setInputs((prevInputs) => ({
+                ...prevInputs,
+                [activeField]: typeof prevInputs[activeField] === 'string' ? prevInputs[activeField] + value : value,
+            }));
+        }
+    };
 
 
     const navigate = useNavigate()
@@ -18,23 +52,23 @@ const Setting_3 = () => {
     const [saveStatus, setSaveStatus] = useState(true)
 
     const [heaterEditing, setheaterEditing] = useState(false);
-    const [heaterTime, setheaterTime] = useState(0);
+    // const [heaterTemp, setheaterTemp] = useState(0);
     const [postHeater, setPostHeater] = useState(0)
     // console.log(postHeater)
     const [overLoadEditing, setoverLoadEditing] = useState(false);
-    const [overLoadTime, setoverLoadTime] = useState(0);
+    // const [overLoadTime, setoverLoadTime] = useState(0);
     const [postoverLoadTime, setPostoverLoadTime] = useState(0)
 
     const [crusherStartEditing, setcrusherStartEditing] = useState(false);
-    const [crusherStartTime, setcrusherStartTime] = useState(0);
+    // const [crusherStartTime, setcrusherStartTime] = useState(0);
     const [postcrusherStartTime, setPostcrusherStartTime] = useState(0)
 
     const [crusherRevEditing, setcrusherRevEditing] = useState(false);
-    const [crusherRevTime, setcrusherRevTime] = useState(0);
+    // const [crusherRevTime, setcrusherRevTime] = useState(0);
     const [postcrusherRevTime, setPostcrusherRevTime] = useState(0)
 
     const [currentFreqEditing, setcurrentFreqEditing] = useState(false);
-    const [currentFreqTime, setcurrentFreqTime] = useState(0);
+    // const [currentFreqTime, setcurrentFreqTime] = useState(0);
     const [postcurrentFreqTime, setPostcurrentFreqTime] = useState(0)
 
     // const socket = new WebSocket(`${wsUrl}?screen=Settings`)
@@ -114,12 +148,19 @@ const Setting_3 = () => {
 
     const mainFunction = (data) => {
         // setTcTime(data.total_cycle_time)
-        setheaterTime(data.heater_temp_cut_off)
-        setoverLoadTime(data.overload_current_time)
-        setcrusherStartTime(data.delay_time_for_crusher_start)
-        setcrusherRevTime(data.delay_time_for_crusher_rev)
-        setcurrentFreqTime(data.crusher_freq)
+        // setheaterTemp(data.heater_temp_cut_off)
+        // setoverLoadTime(data.overload_current_time)
+        // setcrusherStartTime(data.delay_time_for_crusher_start)
+        // setcrusherRevTime(data.delay_time_for_crusher_rev)
+        // setcurrentFreqTime(data.crusher_freq)
 
+        setInputs({
+            heaterTemp: data.heater_temp_cut_off,
+            overLoadTime: data.overload_current_time,
+            crusherStartTime: data.delay_time_for_crusher_start,
+            crusherRevTime: data.delay_time_for_crusher_rev,
+            currentFreqTime: data.crusher_freq,
+        })
     }
 
     const handleSaveButton = () => {
@@ -131,11 +172,11 @@ const Setting_3 = () => {
 
         const messageObj = {
 
-            heater_temp_cut_off: postHeater === 0 ? heaterTime : postHeater,
-            overload_current_time: postoverLoadTime === 0 ? overLoadTime : postoverLoadTime,
-            delay_time_for_crusher_start: postcrusherStartTime === 0 ? crusherStartTime : postcrusherStartTime,
-            delay_time_for_crusher_rev: postcrusherRevTime === 0 ? crusherRevTime : postcrusherRevTime,
-            crusher_freq: postcurrentFreqTime === 0 ? currentFreqTime : postcurrentFreqTime
+            heater_temp_cut_off: postHeater === 0 ? parseFloat(inputs.heaterTemp) : postHeater,
+            overload_current_time: postoverLoadTime === 0 ? parseInt(inputs.overLoadTime) : postoverLoadTime,
+            delay_time_for_crusher_start: postcrusherStartTime === 0 ? parseInt(inputs.crusherStartTime) : postcrusherStartTime,
+            delay_time_for_crusher_rev: postcrusherRevTime === 0 ? parseInt(inputs.crusherRevTime) : postcrusherRevTime,
+            crusher_freq: postcurrentFreqTime === 0 ? parseInt(inputs.currentFreqTime) : postcurrentFreqTime
 
         }
 
@@ -214,11 +255,11 @@ const Setting_3 = () => {
                         </Text>
                         {/* <Text id="presentfwdTime" fz={"xl"} fw={600}>123 C</Text> */}
                         {heaterEditing ?
-                            <NumberInput
+                            <TextInput
                                 hideControls
-                                value={postHeater === 0 ? heaterTime : postHeater} // Set initial value
-                                onChange={setPostHeater} /> :
-                            <Text fz={"xl"} fw={600}>{heaterTime}° C </Text>
+                                value={postHeater === 0 ? inputs.heaterTemp : postHeater} // Set initial value
+                                onClick={() => handleInputClick('heaterTemp')} /> :
+                            <Text fz={"xl"} fw={600}>{inputs.heaterTemp}° C </Text>
                         }
                         <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
                             onClick={() => {
@@ -232,12 +273,11 @@ const Setting_3 = () => {
                         </Text>
                         {/* <Text id="presentfwdTime" fz={"xl"} fw={600}>120 A</Text> */}
                         {overLoadEditing ?
-                            <NumberInput
+                            <TextInput
                                 hideControls
-                                value={postoverLoadTime === 0 ? overLoadTime : postoverLoadTime} // Set initial value
-                                onChange={
-                                    setPostoverLoadTime} /> :
-                            <Text fz={"xl"} fw={600}>{overLoadTime} A </Text>
+                                value={postoverLoadTime === 0 ? inputs.overLoadTime : postoverLoadTime} // Set initial value
+                                onClick={() => handleInputClick('overLoadTime')} /> :
+                            <Text fz={"xl"} fw={600}>{inputs.overLoadTime} A </Text>
                         }
                         <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
                             onClick={() => {
@@ -252,14 +292,11 @@ const Setting_3 = () => {
                         </Text>
                         {/* <Text id="presentwait1" fz={"xl"} fw={600}>124 Sec</Text> */}
                         {crusherStartEditing ?
-                            <NumberInput
+                            <TextInput
                                 hideControls
-                                value={postcrusherStartTime === 0 ? crusherStartTime : postcrusherStartTime} // Set initial value
-                                onChange={
-                                    // console.log(fwdTime)
-                                    setPostcrusherStartTime
-                                } /> :
-                            <Text fz={"xl"} fw={600}>{crusherStartTime} Sec </Text>
+                                value={postcrusherStartTime === 0 ? inputs.crusherStartTime : postcrusherStartTime} // Set initial value
+                                onClick={() => handleInputClick('crusherStartTime')} /> :
+                            <Text fz={"xl"} fw={600}>{inputs.crusherStartTime} Sec </Text>
                         }
                         <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
                             onClick={() => {
@@ -274,14 +311,11 @@ const Setting_3 = () => {
                         </Text>
                         {/* <Text id="presentrevTime" fz={"xl"} fw={600}>130 Sec</Text> */}
                         {crusherRevEditing ?
-                            <NumberInput
+                            <TextInput
                                 hideControls
-                                value={postcrusherRevTime === 0 ? crusherRevTime : postcrusherRevTime} // Set initial value
-                                onChange={
-                                    // console.log(fwdTime)
-                                    setPostcrusherRevTime
-                                } /> :
-                            <Text fz={"xl"} fw={600}>{crusherRevTime} Sec</Text>
+                                value={postcrusherRevTime === 0 ? inputs.crusherRevTime : postcrusherRevTime} // Set initial value
+                                onClick={() => handleInputClick('crusherRevTime')} /> :
+                            <Text fz={"xl"} fw={600}>{inputs.crusherRevTime} Sec</Text>
                         }
                         <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
                             onClick={() => {
@@ -295,14 +329,11 @@ const Setting_3 = () => {
                         <Text fz={"xl"} fw={700}>Crusher Frequency</Text>
                         {/* <Text id="presentwait2" fz={"xl"} fw={600}>125 Hz</Text> */}
                         {currentFreqEditing ?
-                            <NumberInput
+                            <TextInput
                                 hideControls
-                                value={postcurrentFreqTime === 0 ? currentFreqTime : postcurrentFreqTime} // Set initial value
-                                onChange={
-                                    // console.log(fwdTime)
-                                    setPostcurrentFreqTime
-                                } /> :
-                            <Text fz={"xl"} fw={600}>{currentFreqTime} Hz</Text>
+                                value={postcurrentFreqTime === 0 ? inputs.currentFreqTime : postcurrentFreqTime} // Set initial value
+                                onClick={() => handleInputClick('currentFreqTime')} /> :
+                            <Text fz={"xl"} fw={600}>{inputs.currentFreqTime} Hz</Text>
                         }
                         <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
                             onClick={() => {
@@ -326,6 +357,10 @@ const Setting_3 = () => {
                     </div>
                 </Grid.Col>
             </Grid>
+
+            <Drawer withCloseButton={false} position='bottom' size={'xxs'} opened={numPadopened} onClose={() => setnumPadOpened(false)} >
+                <NumPad onButtonClick={handleButtonClick} />
+            </Drawer>
             {/* </Container> */}
             {/* </div> */}
 

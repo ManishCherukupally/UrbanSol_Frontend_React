@@ -1,39 +1,76 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Button, Card, Container, Flex, Grid, Group, NumberInput, SimpleGrid, Space, Text, TextInput } from '@mantine/core'
+import { Button, Card, Container, Drawer, Flex, Grid, Group, NumberInput, SimpleGrid, Space, Text, TextInput } from '@mantine/core'
 import { useNavigate } from 'react-router-dom'
 import { wsUrl } from './config'
 import { MdArrowLeft, MdArrowRight } from 'react-icons/md'
 import OverlayModal from './OverlayModal'
+import NumPad from '../Numpad'
 const Setting_2 = () => {
     // let url = `ws://192.168.29.144:8765?screen=Settings`
 
     const navigate = useNavigate()
 
+
+    const [inputs, setInputs] = useState({
+        blowTime: '',
+        getCompostOutHours: '',
+        getCompostOutMinutes: '',
+        getCompostOutSeconds: '',
+        lowerTempTime: '',
+        upperTempTime: '',
+        cycles: ''
+
+    });
+    const [activeField, setActiveField] = useState(null);
+    const [numPadopened, setnumPadOpened] = useState(false);
+
+    const handleInputClick = (field) => {
+        setActiveField(field);
+        setnumPadOpened(true);
+    };
+
+    const handleButtonClick = (value) => {
+        if (value === 'backspace') {
+            setInputs((prevInputs) => ({
+                ...prevInputs,
+                [activeField]: typeof prevInputs[activeField] === 'string' ? prevInputs[activeField].slice(0, -1) : '',
+            }));
+        } else if (value === 'enter') {
+            setnumPadOpened(false);
+            setActiveField(null);
+        } else {
+            setInputs((prevInputs) => ({
+                ...prevInputs,
+                [activeField]: typeof prevInputs[activeField] === 'string' ? prevInputs[activeField] + value : value,
+            }));
+        }
+    };
+
     const [saveStatus, setSaveStatus] = useState(true)
 
     const [blowEditing, setblowEditing] = useState(false);
-    const [blowTime, setblowTime] = useState(0);
+    // const [blowTime, setblowTime] = useState(0);
     const [postblowTime, setPostblowTime] = useState(0)
 
     const [compostOutEditing, setcompostOutEditing] = useState(false);
-    const [getCompostOutHours, setgetCompostOutHours] = useState(0);
-    const [getCompostOutMinutes, setgetCompostOutMinutes] = useState(0);
-    const [getCompostOutSeconds, setgetCompostOutSeconds] = useState(0);
+    // const [getCompostOutHours, setgetCompostOutHours] = useState(0);
+    // const [getCompostOutMinutes, setgetCompostOutMinutes] = useState(0);
+    // const [getCompostOutSeconds, setgetCompostOutSeconds] = useState(0);
 
     const [lowerTempEditing, setlowerTempEditing] = useState(false);
-    const [lowerTempTime, setlowerTempTime] = useState(0);
+    // const [lowerTempTime, setlowerTempTime] = useState(0);
     const [postlowerTempTime, setPostlowerTempTime] = useState(0)
 
     const [upperTempEditing, setupperTempEditing] = useState(false);
-    const [upperTempTime, setupperTempTime] = useState(0);
+    // const [upperTempTime, setupperTempTime] = useState(0);
     const [postupperTempTime, setPostupperTempTime] = useState(0)
 
     const [cyclesEditing, setcyclesEditing] = useState(false);
-    const [cycles, setcycles] = useState(0);
+    // const [cycles, setcycles] = useState(0);
     const [postcycles, setPostcycles] = useState(0)
 
 
-    // const [compostOuthours, setcompostOutHours] = useState(0);
+    // const [compostOuthours, setcompostOut87ytfrdqszHours] = useState(0);
     // const [compostOutminutes, setcompostOutMinutes] = useState(0);
     // const [compostOutseconds, setcompostOutSeconds] = useState(0);
 
@@ -113,16 +150,26 @@ const Setting_2 = () => {
     }, []);
 
     const mainFunction = (data) => {
-        // setTcTime(data.total_cycle_time)
-        setblowTime(data.blower)
+        // // setTcTime(data.total_cycle_time)
+        // setblowTime(data.blower)
 
-        setgetCompostOutHours(parseInt(data.compost_out_time / 3600))
-        setgetCompostOutMinutes(parseInt((data.compost_out_time % 3600) / 60))
-        setgetCompostOutSeconds(parseInt((data.compost_out_time % 3600) % 60))
+        // setgetCompostOutHours(parseInt(data.compost_out_time / 3600))
+        // setgetCompostOutMinutes(parseInt((data.compost_out_time % 3600) / 60))
+        // setgetCompostOutSeconds(parseInt((data.compost_out_time % 3600) % 60))
 
-        setlowerTempTime(data.temp_lower_limit)
-        setupperTempTime(data.temp_upper_limit)
-        setcycles(data.no_of_cycles)
+        // setlowerTempTime(data.temp_lower_limit)
+        // setupperTempTime(data.temp_upper_limit)
+        // setcycles(data.no_of_cycles)
+
+        setInputs({
+            blowTime: data.blower,
+            getCompostOutHours: parseInt(data.compost_out_time / 3600),
+            getCompostOutMinutes: parseInt((data.compost_out_time % 3600) / 60),
+            getCompostOutSeconds: parseInt((data.compost_out_time % 3600) % 60),
+            lowerTempTime: data.temp_lower_limit,
+            upperTempTime: data.temp_upper_limit,
+            cycles: data.no_of_cycles
+        })
 
 
     }
@@ -135,14 +182,14 @@ const Setting_2 = () => {
         setupperTempEditing(false)
         setcyclesEditing(false)
 
-        const CompostOutTotalSeconds = getCompostOutHours * 3600 + getCompostOutMinutes * 60 + getCompostOutSeconds;
+        const CompostOutTotalSeconds = parseInt(inputs.getCompostOutHours) * 3600 + parseInt(inputs.getCompostOutMinutes) * 60 + parseInt(inputs.getCompostOutSeconds);
 
         const messageObj = {
-            blower: postblowTime === 0 ? blowTime : postblowTime,
+            blower: postblowTime === 0 ? parseInt(inputs.blowTime) : postblowTime,
             compost_out_time: CompostOutTotalSeconds,
-            temp_lower_limit: postlowerTempTime === 0 ? lowerTempTime : postlowerTempTime,
-            temp_upper_limit: postupperTempTime === 0 ? upperTempTime : postupperTempTime,
-            no_of_cycles: postcycles === 0 ? cycles : postcycles,
+            temp_lower_limit: postlowerTempTime === 0 ? parseFloat(inputs.lowerTempTime) : postlowerTempTime,
+            temp_upper_limit: postupperTempTime === 0 ? parseFloat(inputs.upperTempTime) : postupperTempTime,
+            no_of_cycles: postcycles === 0 ? parseInt(inputs.cycles) : postcycles,
 
         }
 
@@ -223,13 +270,12 @@ const Setting_2 = () => {
                         <Text fz={"xl"} fw={700}>Blower On Time</Text>
                         {/* <Text id="presenttcTime" fz={"xl"} fw={600}>123 Sec</Text> */}
                         {blowEditing ?
-                            <NumberInput
+                            <TextInput
 
                                 hideControls
-                                value={postblowTime === 0 ? blowTime : postblowTime} // Set initial value
-                                onChange={
-                                    setPostblowTime} /> :
-                            <Text fz={"xl"} fw={600}>{blowTime} Sec </Text>
+                                value={postblowTime === 0 ? inputs.blowTime : postblowTime} // Set initial value
+                                onClick={() => handleInputClick('blowTime')} /> :
+                            <Text fz={"xl"} fw={600}>{inputs.blowTime} Sec </Text>
                         }
 
                         <Button h={"3rem"} w={"5rem"} c={"black"} style={{ backgroundColor: "#e1e1e1" }}
@@ -245,33 +291,33 @@ const Setting_2 = () => {
                         {/* <Text id="presentfwdTime" fz={"xl"} fw={600}>12 : 12 Hrs</Text> */}
                         {compostOutEditing ?
                             <Flex gap="0.5rem" align="center">
-                                <NumberInput
+                                <TextInput
                                     max={24}
                                     min={0}
                                     h={40}
                                     hideControls
-                                    value={getCompostOutHours}
-                                    onChange={setgetCompostOutHours}
+                                    value={inputs.getCompostOutHours}
+                                    onClick={() => handleInputClick('getCompostOutHours')}
                                     placeholder="Hours"
                                 />
                                 <Text pt="0.5rem" fz="xl" fw={700}>:</Text>
-                                <NumberInput
+                                <TextInput
                                     max={59}
                                     min={0}
                                     h={40}
                                     hideControls
-                                    value={getCompostOutMinutes}
-                                    onChange={setgetCompostOutMinutes}
+                                    value={inputs.getCompostOutMinutes}
+                                    onClick={() => handleInputClick('getCompostOutMinutes')}
                                     placeholder="Minutes"
                                 />
                                 <Text pt="0.5rem" fz="xl" fw={700}>:</Text>
-                                <NumberInput
+                                <TextInput
                                     max={59}
                                     min={0}
                                     h={40}
                                     hideControls
-                                    value={getCompostOutSeconds}
-                                    onChange={setgetCompostOutSeconds}
+                                    value={inputs.getCompostOutSeconds}
+                                    onClick={() => handleInputClick('getCompostOutSeconds')}
                                     placeholder="Seconds"
                                 />
 
@@ -279,17 +325,17 @@ const Setting_2 = () => {
                             :
                             <Group>
                                 <Flex align={"center"} gap={10}>
-                                    <Text fz={"xl"} fw={600} >{getCompostOutHours}</Text>
+                                    <Text fz={"xl"} fw={600} >{inputs.getCompostOutHours}</Text>
                                     <Text fz={"xl"} fw={600} >H </Text>
                                     <Text fz={"xl"} fw={600} >:</Text>
                                 </Flex>
                                 <Flex align={"center"} gap={10}>
-                                    <Text fz={"xl"} fw={600} >{getCompostOutMinutes}</Text>
+                                    <Text fz={"xl"} fw={600} >{inputs.getCompostOutMinutes}</Text>
                                     <Text fz={"xl"} fw={600} >M </Text>
                                     <Text fz={"xl"} fw={600} >:</Text>
                                 </Flex>
                                 <Flex align={"center"} gap={3}>
-                                    <Text fz={"xl"} fw={600} >{getCompostOutSeconds}</Text>
+                                    <Text fz={"xl"} fw={600} >{inputs.getCompostOutSeconds}</Text>
 
                                     <Text fz={"xl"} fw={600} > S</Text>
                                 </Flex>
@@ -320,14 +366,11 @@ const Setting_2 = () => {
                                 Lower Limit</span></Text> */}
                         {/* <Text id="presentfwdTime" fz={"xl"} fw={600}>12 : 12 Hrs</Text> */}
                         {lowerTempEditing ?
-                            <NumberInput
+                            <TextInput
                                 hideControls
-                                value={postlowerTempTime === 0 ? lowerTempTime : postlowerTempTime} // Set initial value
-                                onChange={
-                                    // console.log(fwdTime)
-                                    setPostlowerTempTime
-                                } /> :
-                            <Text fz={"xl"} fw={600}>{lowerTempTime}° C </Text>
+                                value={postlowerTempTime === 0 ? inputs.lowerTempTime : postlowerTempTime} // Set initial value
+                                onClick={() => handleInputClick('lowerTempTime')} /> :
+                            <Text fz={"xl"} fw={600}>{inputs.lowerTempTime}° C </Text>
                         }
                         <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
                             onClick={() => {
@@ -343,14 +386,11 @@ const Setting_2 = () => {
                                 Upper Limit</span></Text> */}
                         {/* <Text id="presentfwdTime" fz={"xl"} fw={600}>12 : 12 Hrs</Text> */}
                         {upperTempEditing ?
-                            <NumberInput
+                            <TextInput
                                 hideControls
-                                value={postupperTempTime === 0 ? upperTempTime : postupperTempTime} // Set initial value
-                                onChange={
-                                    // console.log(fwdTime)
-                                    setPostupperTempTime
-                                } /> :
-                            <Text fz={"xl"} fw={600}>{upperTempTime}° C</Text>
+                                value={postupperTempTime === 0 ? inputs.upperTempTime : postupperTempTime} // Set initial value
+                                onClick={() => handleInputClick('upperTempTime')} /> :
+                            <Text fz={"xl"} fw={600}>{inputs.upperTempTime}° C</Text>
                         }
                         <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
                             onClick={() => {
@@ -366,7 +406,7 @@ const Setting_2 = () => {
 
                         {/* <Flex direction={"column"} h={"11rem"} justify={"space-between"}>
                             {lowerTempEditing ?
-                                <NumberInput
+                                <TextInput
                                     hideControls
                                     value={postlowerTempTime === 0 ? lowerTempTime : postlowerTempTime} // Set initial value
                                     onChange={
@@ -377,7 +417,7 @@ const Setting_2 = () => {
                             }
 
                             {upperTempEditing ?
-                                <NumberInput
+                                <TextInput
                                     hideControls
                                     value={postupperTempTime === 0 ? upperTempTime : postupperTempTime} // Set initial value
                                     onChange={
@@ -399,7 +439,7 @@ const Setting_2 = () => {
                         {/* <Text fz={"xl"} fw={700}>Heater Temp. Lower Limit</Text>
                                     <Text id="presentwait1" fz={"xl"} fw={600}>12 : 12 Hrs</Text>
                                     {lowerTempEditing ?
-                                        <NumberInput
+                                        <TextInput
                                             hideControls
                                             value={lowerTempTime} // Set initial value
                                             onChange={
@@ -416,7 +456,7 @@ const Setting_2 = () => {
                                     <Text fz={"xl"} fw={700}>Heater Temp. Upper Limit</Text>
                                     <Text id="presentrevTime" fz={"xl"} fw={600}>130 Sec</Text>
                                     {upperTempEditing ?
-                                        <NumberInput
+                                        <TextInput
                                             hideControls
                                             value={upperTempTime} // Set initial value
                                             onChange={
@@ -433,14 +473,11 @@ const Setting_2 = () => {
                         <Text fz={"xl"} fw={700}>No. Of Cycles</Text>
                         {/* <Text id="presentwait2" fz={"xl"} fw={600}>125 </Text> */}
                         {cyclesEditing ?
-                            <NumberInput
+                            <TextInput
                                 hideControls
-                                value={postcycles === 0 ? cycles : postcycles} // Set initial value
-                                onChange={
-                                    // console.log(fwdTime)
-                                    setPostcycles
-                                } /> :
-                            <Text fz={"xl"} fw={600}>{cycles} </Text>
+                                value={postcycles === 0 ? inputs.cycles : postcycles} // Set initial value
+                                onClick={() => handleInputClick('cycles')} /> :
+                            <Text fz={"xl"} fw={600}>{inputs.cycles} </Text>
                         }
                         <Button id="fwdEdit" h={"3rem"} w={"5rem"} c={"black"}
                             onClick={() => {
@@ -462,6 +499,10 @@ const Setting_2 = () => {
                     </div>
                 </Grid.Col>
             </Grid>
+
+            <Drawer withCloseButton={false} position='bottom' size={'xxs'} opened={numPadopened} onClose={() => setnumPadOpened(false)} >
+                <NumPad onButtonClick={handleButtonClick} />
+            </Drawer>
             {/* </Container>
             </div> */}
 
