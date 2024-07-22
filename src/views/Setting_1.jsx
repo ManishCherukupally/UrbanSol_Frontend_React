@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { wsUrl } from './config';
 import { MdArrowRight } from 'react-icons/md';
 import OverlayModal from './OverlayModal';
-import KioskBoard from 'kioskboard';
 import NumPad from '../Numpad';
 
 const Setting_1 = () => {
