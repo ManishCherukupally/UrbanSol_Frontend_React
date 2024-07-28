@@ -26,9 +26,10 @@ const NumPad = ({ onButtonClick }) => {
         <Grid grow>
             {buttons.map((button) => (
                 <Grid.Col span={1} key={button.value}>
-                    <Button
+                    <Button h={"3rem"}
                         fullWidth
                         variant="outline"
+                        color='dark'
                         onClick={() => onButtonClick(button.value)}
                     >
                         {button.label}
@@ -46,7 +47,7 @@ const NumPad = ({ onButtonClick }) => {
                 </Button>
             </Grid.Col> */}
             <Grid.Col span={6}>
-                <Button
+                <Button h={"3rem"}
                     fullWidth
                     color="green"
                     variant="filled"
