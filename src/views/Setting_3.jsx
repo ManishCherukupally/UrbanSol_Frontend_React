@@ -215,7 +215,7 @@ const Setting_3 = () => {
 
     }
     return (
-        <div style={{ height: "115vh" }}>
+        <div style={{ height: "125vh" }}>
             {websocketError ? (<OverlayModal status={true} message={"Websocket Connection Error"} time={popupTime} />) : (
                 <OverlayModal status={popupStatus} message={popupMessage} time={popupTime} />
             )}

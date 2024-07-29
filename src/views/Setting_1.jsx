@@ -200,7 +200,7 @@ const Setting_1 = () => {
     //     setTcTime(event.currentTarget.value);
     // };
     return (
-        <div style={{ height: "110vh" }} >
+        <div style={{ height: "120vh" }} >
             {websocketError ? (<OverlayModal status={true} message={"Websocket Connection Error"} time={popupTime} />) : (
                 <OverlayModal status={popupStatus} message={popupMessage} time={popupTime} />
             )}
